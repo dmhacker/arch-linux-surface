@@ -17,6 +17,7 @@ makedepends=('xmlto' 'kmod' 'inetutils' 'bc' 'libelf')
 options=('!strip')
 source=(
   git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+  .config        # kernel configuration file
   60-linux.hook  # pacman hook for depmod
   90-linux.hook  # pacman hook for initramfs regeneration
   linux.preset   # standard config files for mkinitcpio ramdisk
@@ -43,21 +44,6 @@ prepare() {
   # Note that patches/ is not copied to ${srcdir}
   for i in ../../patches/*.patch; do patch -p1 < $i; done
 
-  # Configuration dialog
-  echo ""
-  echo "Patching current kernel configuration file ..."
-  echo "User input is required for any new options."
-  sleep 2
-  echo "" 
-
-  # Initialize the configuration file
-  # zcat /proc/config.gz > .config
-  make defconfig
-  # make oldconfig
-
-  # Patch configuration file
-  patch -p1 -i .config < ../../config.patch
-
   # Set extraversion to pkgrel and empty localversion
   sed -e "/^EXTRAVERSION =/s/=.*/= -${pkgrel}/" \
       -e "/^EXTRAVERSION =/aLOCALVERSION =" \
@@ -65,6 +51,9 @@ prepare() {
 
   # Don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
+
+  # Fill in missing options for configuration file
+  make olddefconfig 
 
   # Get kernel version
   make prepare

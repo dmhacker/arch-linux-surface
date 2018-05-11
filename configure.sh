@@ -80,8 +80,9 @@ if [ -d "../patches/$major_version" ]; then
 fi
 cp ../$cache_folder/$patches_src_folder/patches/$major_version/*.patch patches
 
-# Add configuration patch
-cp ../$cache_folder/$patches_src_folder/patches/config.patch .
+# Copy modified configuration file
+cp ../config/config.$major_version .
+mv config.$major_version .config
 
 # Ask user if they want to proceed
 nproc=`grep -c ^processor /proc/cpuinfo`
