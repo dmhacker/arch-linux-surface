@@ -84,7 +84,9 @@ cp ../$cache_folder/$patches_src_folder/patches/$major_version/*.patch patches
 cp ../config/config.$major_version .
 mv config.$major_version .config
 
-# Ask user if they want to proceed
+# Update package checksums to account for new configuration file
+updpkgsums
+
 nproc=`grep -c ^processor /proc/cpuinfo`
 echo ""
 echo "Build files for patched Linux kernel v$version are in $build_folder."
