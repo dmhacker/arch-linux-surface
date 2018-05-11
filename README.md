@@ -24,5 +24,5 @@ linux-surface-docs-{VERSION}-1.pkg.tar.xz
 ```
 You can either install them with `pacman -U ...` or do something else with them.
 
-Once the patched kernel is installed, the final step is to change your bootloader's 
+Once the patched kernel is installed, the remaining step is to change your bootloader's 
 configuration to load the updated kernel. Then, `reboot` your system.
