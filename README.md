@@ -5,11 +5,11 @@ This is an automated Linux Kernel packager that applies
 to the Linux kernel of your choice. All you have to do is run
 
 ```
-makepkg -si
+MAKEFLAGS="-j$(nproc)" makepkg -si
 ```
+<sup><sub>* replace $(nproc)$ with the number of processors on your system<\sub><\sup>
 
-and specify what version of Linux you want to patch (i.e. 4.16). At the end of the process, you
-should have a working, patched kernel on your system. Cool!
+During the build process, the packager will ask what version of the Linux kernel to patch. At the end of the process, you should have the patched version of that kernel on your system. Cool!
 
 Afterwards, all you need to do is change your bootloader's configuration to load the updated 
 kernel and `reboot` your system.
