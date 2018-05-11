@@ -3,30 +3,11 @@
 # Maintainer: Thomas Baechler <thomas@archlinux.org>
 # Modified by: David Hacker <dmhacker.cs@gmail.com>
 
-# Have the user enter their target kernel version
-echo "Which kernel version do you want to build?"
-select _kernelver in "4.14" "4.15" "4.16"; do 
-  break;
-done
+# Variable values are updated by the Makefile
+_kernelver={0}
+pkgver={1}
 
-# Convert the kernel major version to a specific kernel version
-case "${_kernelver}" in
-  "4.14")
-    pkgver="4.14.40"
-    ;;
-  "4.15")
-    pkgver="4.15.18"
-    ;;
-  "4.16")
-    pkgver="4.16.8"
-    ;;
-  *)
-    echo "Invalid selection!"
-    exit 1
-    ;;
-esac
-echo "Patching version ${pkgver} of the Linux kernel."
-
+# Standard package variables
 pkgbase=linux-surface
 pkgrel=1
 arch=('x86_64')
@@ -62,19 +43,10 @@ _srcpatches=linux-surface
 _kernelname=${pkgbase#linux}
 
 prepare() {
-  # Make sure our source repositories are current
-  cd ${_srcpatches}
-  git pull
-  cd ../${_srcname}
-  git pull 
+  cd ${_srcname}
 
   # Checkout the version of the kernel we want to patch 
   git checkout "v${pkgver}"
-
-  # Remove irrelevant Arch patches if we are not building kernel v4.16
-  if [ "${_kernelver}" != "4.16" ]; then
-    rm ../*.patch  
-  fi
 
   # Copy patches for our target version from jakeday's repo to build directory
   cp ../${_srcpatches}/patches/${_kernelver}/* ..
