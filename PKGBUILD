@@ -3,8 +3,31 @@
 # Maintainer: Thomas Baechler <thomas@archlinux.org>
 # Modified by: David Hacker <dmhacker.cs@gmail.com>
 
+# Have the user enter their target kernel version
+echo "Which kernel version do you want to build?"
+select _kernelver in "4.14" "4.15" "4.16"; do 
+  break;
+done
+
+# Convert the kernel major version to a specific kernel version
+case "${_kernelver}" in
+  "4.14")
+    pkgver="4.14.40"
+    ;;
+  "4.15")
+    pkgver="4.15.18"
+    ;;
+  "4.16")
+    pkgver="4.16.8"
+    ;;
+  *)
+    echo "Invalid selection!"
+    exit 1
+    ;;
+esac
+echo "Patching version ${pkgver} of the Linux kernel."
+
 pkgbase=linux-surface
-pkgver=4.6.18
 pkgrel=1
 arch=('x86_64')
 url="https://www.kernel.org/"
@@ -35,45 +58,26 @@ sha256sums=('SKIP'
             '5b397cf9eccdad0c1f2865842c29ba6f4e32ad7dbe4e0c6ef6ca6f07d2963cea')
 
 _srcname=linux-stable
-_patchsrcname=linux-surface
+_srcpatches=linux-surface
 _kernelname=${pkgbase#linux}
 
 prepare() {
-  cd ${_srcname}
-
-  # Have the user enter their target kernel version
-  echo "Which kernel version do you want to build?"
-  select _version in "4.14" "4.15" "4.16"; do 
-    break;
-  done
-
-  # Convert the kernel major version to a specific kernel version
-  case "${_version}" in
-    "4.14")
-      pkgver="4.14.40"
-      # Remove irrelevant Arch patches
-      rm ../*.patch  
-      ;;
-    "4.15")
-      pkgver="4.15.18"
-      # Remove irrelevant Arch patches
-      rm ../*.patch 
-      ;;
-    "4.16")
-      pkgver="4.16.8"
-      ;;
-    *)
-      echo "Invalid selection!"
-      exit 1
-      ;;
-  esac
-  echo "Patching version ${pkgver} of the Linux kernel."
+  # Make sure our source repositories are current
+  cd ${_srcpatches}
+  git pull
+  cd ../${_srcname}
+  git pull 
 
   # Checkout the version of the kernel we want to patch 
   git checkout "v${pkgver}"
 
+  # Remove irrelevant Arch patches if we are not building kernel v4.16
+  if [ "${_kernelver}" != "4.16" ]; then
+    rm ../*.patch  
+  fi
+
   # Copy patches for our target version from jakeday's repo to build directory
-  cp ../${_patchsrcname}/patches/${_version}/* ..
+  cp ../${_srcpatches}/patches/${_kernelver}/* ..
 
   # Apply patches (include Arch default patches)
   for i in ../*.patch; do patch -p1 < $i; done
@@ -95,7 +99,7 @@ prepare() {
   make prepare
 
   # Prompt the user if they would like to configure the kernel
-  read -p "Configure the kernel? [y/N] " _configure
+  read -p "Do you want to configure the kernel? [y/N] " _configure
 
   # If the user wants to configure the kernel, have them use xconfig.
   if [ "${_configure,,}" = "y" ]; then
@@ -250,9 +254,9 @@ _package-docs() {
 pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
 for _p in ${pkgname[@]}; do
   eval "package_${_p}() {
-    $(declare -f "_package${_p#${pkgbase}}")
-    _package${_p#${pkgbase}}
-  }"
+  $(declare -f "_package${_p#${pkgbase}}")
+  _package${_p#${pkgbase}}
+}"
 done
 
 # vim:set ts=8 sts=2 sw=2 et:
