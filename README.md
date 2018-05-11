@@ -9,16 +9,19 @@ to the Linux kernel of your choice.
 ```
 git clone https://github.com/dmhacker/arch-linux-surface
 cd arch-linux-surface
-MAKEFLAGS="-j$(nproc)" makepkg -sc
+make
 ```
-<sup><sub>\* replace **$(nproc)** with the number of processors on your system</sub></sup><br>
-<sup><sub>\*\* use **makepkg -sci** to install the new kernel immediately after build</sub></sup>
 
 The packager will prompt for the target version of the Linux kernel during the build process.
+Optionally, you can pass it as a VERSION argument to make. e.g.
+
+```
+make VERSION=4.16
+```
 
 ## Installation
 
-If you ran `makepkg` without the `-i` flag, the kernel will appear as three separate files:
+When the build process is completed, under `build-[VERSION]`, you will find these packages:
 ```
 linux-surface-[VERSION]-1-x86_64.pkg.tar.xz
 linux-surface-headers-[VERSION]-1-x86_64.pkg.tar.xz
