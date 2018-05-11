@@ -43,8 +43,19 @@ prepare() {
   # Note that patches/ is not copied to ${srcdir}
   for i in ../../patches/*.patch; do patch -p1 < $i; done
 
+  # Configuration dialog
+  echo ""
+  echo "Patching current kernel configuration file ..."
+  echo "User input is required for new options."
+  sleep 1
+  echo "" 
+
   # Initialize the configuration file
-  make defconfig
+  zcat /proc/config.gz > .config
+  # make defconfig
+  sed -i -e "s/CONFIG_LOCALVERSION=\"\"/CONFIG_LOCALVERSION=${_kernelname}/g" .config
+  echo "CONFIG_LOCALVERSION_AUTO=n" >> .config
+  make oldconfig
 
   # Set extraversion to pkgrel and empty localversion
   sed -e "/^EXTRAVERSION =/s/=.*/= -${pkgrel}/" \
@@ -57,12 +68,8 @@ prepare() {
   # Get kernel version
   make prepare
 
-  # Write local version to the config
-  sed -i -e "s/CONFIG_LOCALVERSION=\"\"/CONFIG_LOCALVERSION=${_kernelname}/g" .config
-  echo "CONFIG_LOCALVERSION_AUTO=n" >> .config
-
   # Prompt the user if they would like to configure the kernel
-  read -p "Do you want to configure the kernel? [y/N] " _configure
+  read -p "Do you want to edit the kernel configuration? [y/N] " _configure
 
   # If the user wants to configure the kernel, have them use xconfig.
   if [ "${_configure,,}" = "y" ]; then
