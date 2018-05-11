@@ -46,16 +46,17 @@ prepare() {
   # Configuration dialog
   echo ""
   echo "Patching current kernel configuration file ..."
-  echo "User input is required for new options."
-  sleep 1
+  echo "User input is required for any new options."
+  sleep 2
   echo "" 
 
   # Initialize the configuration file
-  zcat /proc/config.gz > .config
-  # make defconfig
-  sed -i -e "s/CONFIG_LOCALVERSION=\"\"/CONFIG_LOCALVERSION=${_kernelname}/g" .config
-  echo "CONFIG_LOCALVERSION_AUTO=n" >> .config
-  make oldconfig
+  # zcat /proc/config.gz > .config
+  make defconfig
+  # make oldconfig
+
+  # Patch configuration file
+  patch -p1 -i .config < ../../config.patch
 
   # Set extraversion to pkgrel and empty localversion
   sed -e "/^EXTRAVERSION =/s/=.*/= -${pkgrel}/" \
