@@ -1,5 +1,6 @@
 # No build files 
 *.tar.xz
+linux.install.pkg
 
 # No build directories
 src/
