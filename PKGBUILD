@@ -4,7 +4,7 @@
 # Modified by: David Hacker <dmhacker.cs@gmail.com>
 
 pkgbase=linux-surface
-pkgver=1.0.0
+pkgver=4.6.18
 pkgrel=1
 arch=('x86_64')
 url="https://www.kernel.org/"
@@ -46,28 +46,31 @@ prepare() {
   select _version in "4.14" "4.15" "4.16"; do 
     break;
   done
-  echo "You are using verison ${_version} of the Linux kernel."
 
   # Convert the kernel major version to a specific kernel version
   case "${_version}" in
     "4.14")
-      git checkout "v4.14.40"
+      pkgver="4.14.40"
       # Remove irrelevant Arch patches
       rm ../*.patch  
       ;;
     "4.15")
-      git checkout "v4.15.18"
+      pkgver="4.15.18"
       # Remove irrelevant Arch patches
       rm ../*.patch 
       ;;
     "4.16")
-      git checkout "v4.16.8"
+      pkgver="4.16.8"
       ;;
     *)
       echo "Invalid selection!"
       exit 1
       ;;
   esac
+  echo "Patching version ${pkgver} of the Linux kernel."
+
+  # Checkout the version of the kernel we want to patch 
+  git checkout "v${pkgver}"
 
   # Copy patches for our target version from jakeday's repo to build directory
   cp ../${_patchsrcname}/patches/${_version}/* ..
