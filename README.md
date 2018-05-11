@@ -11,12 +11,10 @@ git clone https://github.com/dmhacker/arch-linux-surface
 cd arch-linux-surface
 MAKEFLAGS="-j$(nproc)" makepkg -s
 ```
-<sup><sub>
-\* replace $(nproc) with the number of processors on your system
-\*\* use makepkg -si if you want to install the new kernel immediately after compilation
-</sub></sup>
+<sup><sub>\* replace **$(nproc)** with the number of processors on your system</sub></sup>
+<sup><sub>\*\* use **makepkg -si** if you want to install the new kernel immediately after compilation </sub></sup>
 
-The packager will prompt for the version of the Linux kernel you want during the build process.
+The packager will prompt for the target version of the Linux kernel during the build process.
 
 ## Installation
 
