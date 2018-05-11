@@ -1,5 +1,8 @@
 #!/usr/bin/bash
 
+############################### VERSION SELECTION ############################### 
+
+# User did not enter a major version selection, prompt for one
 if [ "$1" = "" ]; then
   echo "Which kernel version do you want to build?"
   select major_version in "4.14" "4.15" "4.16"; do
@@ -9,6 +12,7 @@ else
   major_version=$1
 fi
 
+# Convert major version (e.g. 4.14) to full version (e.g. 4.14.40)
 case $major_version in
   "4.14")
     version="4.14.40"
@@ -26,12 +30,16 @@ case $major_version in
     ;;
 esac
 
+############################### VARIABLES ############################### 
+
 cache_folder=.cache
 build_folder=build-${version}
 kernel_repository=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 kernel_src_folder=linux-stable
 patches_repository=git://github.com/jakeday/linux-surface.git
 patches_src_folder=linux-surface
+
+############################### CACHE UPDATES ############################### 
 
 # The cache is used for holding the large linux-stable and linux-surface repositories
 echo "Updating cache ..."
@@ -55,37 +63,46 @@ fi
 # Exit the cache folder 
 cd ..
 
+############################### BUILD UPDATES ############################### 
+
 # Copy templates
-echo "Copying template files to build directory ..." 
+echo "Installing fresh set of templates files ..." 
 rm -rf $build_folder 
 mkdir $build_folder 
 cp templates/* $build_folder 
 
-echo "Configuring build ..." 
+# Enter the newly created build directory
 cd $build_folder
 
 # Fill in blank variables in PKGBUILD
+echo "Adjusting PKGBUILD version ..."
 pkgbuild=`cat PKGBUILD` 
 pkgbuild="${pkgbuild/\{0\}/$major_version}"
 pkgbuild="${pkgbuild/\{1\}/$version}"
 echo "$pkgbuild" > PKGBUILD
 
-# Copy items from the cache into the build directory
-cp -R ../$cache_folder/$kernel_src_folder . 
+# Add kernel repository 
+echo "Creating kernel source code symlink in build directory ..."
+ln -s ../$cache_folder/$kernel_src_folder ./$kernel_src_folder
 
-# Add patches to the build directory
+# Add patches 
+echo "Copying Arch upstream & Surface patches to build directory ..."
 mkdir patches
 if [ -d "../patches/$major_version" ]; then
   cp ../patches/$major_version/*.patch patches
 fi
 cp ../$cache_folder/$patches_src_folder/patches/$major_version/*.patch patches
 
-# Copy modified configuration file
+# Add version-specific configuration file
+echo "Copying v$major_version .config file to build directory ..."
 cp ../config/config.$major_version .
 mv config.$major_version .config
 
 # Update package checksums to account for new configuration file
+echo "Updating package checksums ..."
 updpkgsums
+
+############################### NEXT INSTRUCTIONS ############################### 
 
 nproc=`grep -c ^processor /proc/cpuinfo`
 echo ""

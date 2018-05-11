@@ -45,6 +45,15 @@ prepare() {
   # Note that patches/ is not copied to ${srcdir}
   for i in ../../patches/*.patch; do patch -p1 < $i; done
 
+  # Copy over our configuration file
+  cp ../.config .
+
+  # Make sure CONFIG_LOCALVERSION is set
+  if [ "${_kernelname}" != "" ]; then
+    sed -i "s|CONFIG_LOCALVERSION=.*|CONFIG_LOCALVERSION=\"${_kernelname}\"|g" .config
+    sed -i "s|CONFIG_LOCALVERSION_AUTO=.*|CONFIG_LOCALVERSION_AUTO=n|" .config
+  fi
+
   # Set extraversion to pkgrel and empty localversion
   sed -e "/^EXTRAVERSION =/s/=.*/= -${pkgrel}/" \
       -e "/^EXTRAVERSION =/aLOCALVERSION =" \
@@ -53,19 +62,12 @@ prepare() {
   # Don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
 
-  # Fill in missing options for configuration file
-  make olddefconfig 
-
   # Get kernel version
+  make olddefconfig
   make prepare
 
-  # Prompt the user if they would like to configure the kernel
-  read -p "Do you want to edit the kernel configuration? [y/N] " _configure
-
-  # If the user wants to configure the kernel, have them use xconfig.
-  if [ "${_configure,,}" = "y" ]; then
-    make xconfig
-  fi
+  # Rewrite configuration
+  yes "" | make config > /dev/null
 }
 
 build() {
