@@ -1,9 +1,9 @@
 # $Id$
 # Maintainer: Tobias Powalowski <tpowa@archlinux.org>
 # Maintainer: Thomas Baechler <thomas@archlinux.org>
+# Modified by: David Hacker <dmhacker.cs@gmail.com>
 
 pkgbase=linux-surface
-_srcname=linux-stable
 pkgver=1.0.0
 pkgrel=1
 arch=('x86_64')
@@ -13,6 +13,7 @@ makedepends=('xmlto' 'kmod' 'inetutils' 'bc' 'libelf')
 options=('!strip')
 source=(
   git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+  git://github.com/jakeday/linux-surface.git
   60-linux.hook  # pacman hook for depmod
   90-linux.hook  # pacman hook for initramfs regeneration
   linux.preset   # standard config files for mkinitcpio ramdisk
@@ -25,6 +26,7 @@ validpgpkeys=(
   '647F28654894E3BD457199BE38DBBDC86092693E'  # Greg Kroah-Hartman
 )
 sha256sums=('SKIP'
+            'SKIP'
             'ae2e95db94ef7176207c690224169594d49445e04249d2499e9d2fbc117a0b21'
             '75f99f5239e03238f88d1a834c50043ec32b1dc568f2cc291b07d04718483919'
             'ad6344badc91ad0630caacde83f7f9b97276f80d26a20619a87952be65492c65'
@@ -32,6 +34,8 @@ sha256sums=('SKIP'
             'ceaa19e0af3842c62eb666a4ac5c79d89b3e6d00593442f18d6508ca6d74bbaa'
             '5b397cf9eccdad0c1f2865842c29ba6f4e32ad7dbe4e0c6ef6ca6f07d2963cea')
 
+_srcname=linux-stable
+_patchsrcname=linux-surface
 _kernelname=${pkgbase#linux}
 
 prepare() {
@@ -42,33 +46,39 @@ prepare() {
   select _version in "4.14" "4.15" "4.16"; do 
     break;
   done
+  echo "You are using verison ${_version} of the Linux kernel."
 
   # Convert the kernel major version to a specific kernel version
   case "${_version}" in
     "4.14")
       git checkout "v4.14.40"
+      # Remove irrelevant Arch patches
+      rm ../*.patch  
       ;;
     "4.15")
       git checkout "v4.15.18"
+      # Remove irrelevant Arch patches
+      rm ../*.patch 
       ;;
     "4.16")
       git checkout "v4.16.8"
       ;;
+    *)
+      echo "Invalid selection!"
+      exit 1
+      ;;
   esac
 
-  # Disable USER_NS for non-root users by default
-  patch -Np1 -i ../0001-add-sysctl-to-disallow-unprivileged-CLONE_NEWUSER-by.patch
+  # Copy patches for our target version from jakeday's repo to build directory
+  cp ../${_patchsrcname}/patches/${_version}/* ..
 
-  # https://bugs.archlinux.org/task/56711
-  patch -Np1 -i ../0002-drm-i915-edp-Only-use-the-alternate-fixed-mode-if-it.patch
-
-  # NVIDIA driver compat
-  patch -Np1 -i ../0003-Partially-revert-swiotlb-remove-various-exports.patch
+  # Apply patches (include Arch default patches)
+  for i in ../*.patch; do patch -p1 < $i; done
 
   # Initialize the configuration file
   make defconfig
-  echo "CONFIG_LOCALVERSION=${_kernelname}" > .config
-  echo "CONFIG_LOCALVERSION_AUTO=n" > .config
+  echo "CONFIG_LOCALVERSION=${_kernelname}" >> .config
+  echo "CONFIG_LOCALVERSION_AUTO=n" >> .config
 
   # Set extraversion to pkgrel and empty localversion
   sed -e "/^EXTRAVERSION =/s/=.*/= -${pkgrel}/" \
@@ -82,10 +92,10 @@ prepare() {
   make prepare
 
   # Prompt the user if they would like to configure the kernel
-  read -p "Would you to configure the kernel? [y/N]" _configure
+  read -p "Configure the kernel? [y/N] " _configure
 
   # If the user wants to configure the kernel, have them use xconfig.
-  if [ "${_configure,,}" -eq "y" ]; then
+  if [ "${_configure,,}" = "y" ]; then
     make xconfig
   fi
 }
