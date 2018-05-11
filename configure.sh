@@ -70,14 +70,15 @@ pkgbuild="${pkgbuild/\{0\}/$major_version}"
 pkgbuild="${pkgbuild/\{1\}/$version}"
 echo "$pkgbuild" > PKGBUILD
 
-# Delete any irrelevant Arch-specific patches
-if [ "$major_version" != "4.16" ]; then
-  rm -rf *.patch
-fi
-
 # Copy items from the cache into the build directory
 cp -R ../$cache_folder/$kernel_src_folder . 
-cp -R ../$cache_folder/$patches_src_folder . 
+
+# Add patches to the build directory
+mkdir patches
+if [ -d "../patches/$major_version" ]; then
+  cp ../patches/$major_version/*.patch patches
+fi
+cp ../$cache_folder/$patches_src_folder/patches/$major_version/*.patch patches
 
 # Ask user if they want to proceed
 nproc=`grep -c ^processor /proc/cpuinfo`
