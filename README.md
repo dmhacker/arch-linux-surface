@@ -9,15 +9,25 @@ to the Linux kernel of your choice.
 ```
 git clone https://github.com/dmhacker/arch-linux-surface
 cd arch-linux-surface
-make
+./configure.sh
 ```
 
-The packager will prompt for the target version of the Linux kernel during the build process.
-Optionally, you can pass it as a VERSION argument to make. e.g.
+The packager will prompt for the target version of the Linux kernel during configuration.
+Optionally, you can pass the version as an argument to configure. e.g.
 
 ```
-make VERSION=4.16
+./configure.sh 4.16
 ```
+
+Once configure is finished, it will output a directory titled `build-[VERSION]`. To build
+that specific patched kernel, you can run: 
+
+```
+cd build-[VERSION] && MAKEFLAGS="-j[NPROC]" makepkg -sc
+```
+
+Be sure to replace [VERSION] with whatever kernel version you choose. [NPROC] should be replaced
+by the number of available processors in your machine. 
 
 ## Installation
 

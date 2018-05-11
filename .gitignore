@@ -1,6 +1,5 @@
 # No build files 
 *.tar.xz
-.build.target
 
 # No build directories
 build*/

@@ -82,14 +82,9 @@ cp -R ../$cache_folder/$patches_src_folder .
 # Ask user if they want to proceed
 nproc=`grep -c ^processor /proc/cpuinfo`
 echo ""
-echo "Patched Linux kernel v$version will be compiled with $nproc processors."
-echo "Build output will be in $build_folder/."
-read -p "Do you wish to proceed? [Y/n] " proceed
-if [ ${proceed,,} = "n" ]; then
-  exit 1
-fi
+echo "Build files for patched Linux kernel v$version are in $build_folder."
+echo "The following command can be used to build the kernel packages."
 echo ""
-
-# Export the build folder so make knows what build to compile
-cd ..
-echo "$build_folder" > .build.target
+echo "cd $build_folder && MAKEFLAGS=\"-j$nproc\" makepkg -sc"
+echo ""
+echo "You can optionally provide the -i flag to makepkg install the kernel after build."
