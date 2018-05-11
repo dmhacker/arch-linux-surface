@@ -12,22 +12,23 @@ cd arch-linux-surface
 ./configure.sh
 ```
 
-The packager will prompt for the target version of the Linux kernel during configuration.
-Optionally, you can pass the version as an argument to configure. e.g.
+The packager will prompt for the target major version of the Linux kernel during configuration.<br>
+Optionally, you can pass the major version as an argument to configure. e.g.
 
 ```
 ./configure.sh 4.16
 ```
 
-Once configure is finished, it will output a directory titled `build-[VERSION]`. To build
-that specific patched kernel, you can run: 
+Once configure is finished, it will output a directory titled `build-[VERSION]`.<br>
+Note that [VERSION] is the full version of the kernel and not just its major version.<br>
+To build this kernel, use the command: 
 
 ```
 cd build-[VERSION] && MAKEFLAGS="-j[NPROC]" makepkg -sc
 ```
 
-Be sure to replace [VERSION] with whatever kernel version you choose. [NPROC] should be replaced
-by the number of available processors in your machine. 
+<sup><sub>\* Replace [VERSION] with whatever kernel version configure outputs.<br></sub></sup>
+<sup><sub>\*\* Replace [NPROC] with the number of available processors in your machine.</sub></sup>
 
 ## Installation
 
