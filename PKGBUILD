@@ -2,10 +2,9 @@
 # Maintainer: Tobias Powalowski <tpowa@archlinux.org>
 # Maintainer: Thomas Baechler <thomas@archlinux.org>
 
-pkgbase=linux               # Build stock -ARCH kernel
-#pkgbase=linux-custom       # Build kernel with a different name
-_srcname=linux-4.16
-pkgver=4.16.8
+pkgbase=linux-surface
+_srcname=linux-stable
+pkgver=1.0.0
 pkgrel=1
 arch=('x86_64')
 url="https://www.kernel.org/"
@@ -13,9 +12,7 @@ license=('GPL2')
 makedepends=('xmlto' 'kmod' 'inetutils' 'bc' 'libelf')
 options=('!strip')
 source=(
-  https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.{xz,sign}
-  https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.{xz,sign}
-  config         # the main kernel config file
+  git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
   60-linux.hook  # pacman hook for depmod
   90-linux.hook  # pacman hook for initramfs regeneration
   linux.preset   # standard config files for mkinitcpio ramdisk
@@ -27,11 +24,7 @@ validpgpkeys=(
   'ABAF11C65A2970B130ABE3C479BE3E4300411886'  # Linus Torvalds
   '647F28654894E3BD457199BE38DBBDC86092693E'  # Greg Kroah-Hartman
 )
-sha256sums=('63f6dc8e3c9f3a0273d5d6f4dca38a2413ca3a5f689329d05b750e4c87bb21b9'
-            'SKIP'
-            '6fb2db1e38f762e6a028dfa5e6d094f0eb4324572667923aca3d64c87117772d'
-            'SKIP'
-            '8566a49997faf3f8678440c52578a7a0ee901e598d3b67d3bee3799fb92e8f86'
+sha256sums=('SKIP'
             'ae2e95db94ef7176207c690224169594d49445e04249d2499e9d2fbc117a0b21'
             '75f99f5239e03238f88d1a834c50043ec32b1dc568f2cc291b07d04718483919'
             'ad6344badc91ad0630caacde83f7f9b97276f80d26a20619a87952be65492c65'
@@ -40,18 +33,30 @@ sha256sums=('63f6dc8e3c9f3a0273d5d6f4dca38a2413ca3a5f689329d05b750e4c87bb21b9'
             '5b397cf9eccdad0c1f2865842c29ba6f4e32ad7dbe4e0c6ef6ca6f07d2963cea')
 
 _kernelname=${pkgbase#linux}
-: ${_kernelname:=-ARCH}
 
 prepare() {
   cd ${_srcname}
 
-  # add upstream patch
-  patch -p1 -i ../patch-${pkgver}
+  # Have the user enter their target kernel version
+  echo "Which kernel version do you want to build?"
+  select _version in "4.14" "4.15" "4.16"; do 
+    break;
+  done
 
-  # add latest fixes from stable queue, if needed
-  # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
+  # Convert the kernel major version to a specific kernel version
+  case "${_version}" in
+    "4.14")
+      git checkout "v4.14.40"
+      ;;
+    "4.15")
+      git checkout "v4.15.18"
+      ;;
+    "4.16")
+      git checkout "v4.16.8"
+      ;;
+  esac
 
-  # disable USER_NS for non-root users by default
+  # Disable USER_NS for non-root users by default
   patch -Np1 -i ../0001-add-sysctl-to-disallow-unprivileged-CLONE_NEWUSER-by.patch
 
   # https://bugs.archlinux.org/task/56711
@@ -60,32 +65,29 @@ prepare() {
   # NVIDIA driver compat
   patch -Np1 -i ../0003-Partially-revert-swiotlb-remove-various-exports.patch
 
-  cat ../config - >.config <<END
-CONFIG_LOCALVERSION="${_kernelname}"
-CONFIG_LOCALVERSION_AUTO=n
-END
+  # Initialize the configuration file
+  make defconfig
+  echo "CONFIG_LOCALVERSION=${_kernelname}" > .config
+  echo "CONFIG_LOCALVERSION_AUTO=n" > .config
 
-  # set extraversion to pkgrel and empty localversion
+  # Set extraversion to pkgrel and empty localversion
   sed -e "/^EXTRAVERSION =/s/=.*/= -${pkgrel}/" \
       -e "/^EXTRAVERSION =/aLOCALVERSION =" \
       -i Makefile
 
-  # don't run depmod on 'make install'. We'll do this ourselves in packaging
+  # Don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
 
-  # get kernel version
+  # Get kernel version
   make prepare
 
-  # load configuration
-  # Configure the kernel. Replace the line below with one of your choice.
-  #make menuconfig # CLI menu for configuration
-  #make nconfig # new CLI menu for configuration
-  #make xconfig # X-based configuration
-  #make oldconfig # using old config from previous kernel version
-  # ... or manually edit .config
+  # Prompt the user if they would like to configure the kernel
+  read -p "Would you to configure the kernel? [y/N]" _configure
 
-  # rewrite configuration
-  yes "" | make config >/dev/null
+  # If the user wants to configure the kernel, have them use xconfig.
+  if [ "${_configure,,}" -eq "y" ]; then
+    make xconfig
+  fi
 }
 
 build() {
