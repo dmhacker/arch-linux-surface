@@ -87,7 +87,7 @@ ln -s ../$cache_folder/$kernel_src_folder $kernel_src_folder
 
 # Add Arch upstream patches 
 echo "Creating symlink to Arch upstream patches ..."
-ln -s ../base/patches/$major_version patches
+ln -s ../base/patches patches
 
 # Add Surface device patches
 echo "Creating symlink to Surface device patches ..."
