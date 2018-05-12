@@ -66,10 +66,10 @@ cd ..
 ############################### BUILD UPDATES ############################### 
 
 # Copy templates
-echo "Installing fresh set of templates files ..." 
+echo "Installing fresh set of template files ..." 
 rm -rf $build_folder 
 mkdir $build_folder 
-cp templates/* $build_folder 
+cp base/templates/* $build_folder 
 
 # Enter the newly created build directory
 cd $build_folder
@@ -82,21 +82,21 @@ pkgbuild="${pkgbuild/\{1\}/$version}"
 echo "$pkgbuild" > PKGBUILD
 
 # Add kernel repository 
-echo "Creating kernel source code symlink in build directory ..."
-ln -s ../$cache_folder/$kernel_src_folder ./$kernel_src_folder
+echo "Creating symlink to kernel source code ..."
+ln -s ../$cache_folder/$kernel_src_folder $kernel_src_folder
 
-# Add patches 
-echo "Copying Arch upstream & Surface patches to build directory ..."
-mkdir patches
-if [ -d "../patches/$major_version" ]; then
-  cp ../patches/$major_version/*.patch patches
-fi
-cp ../$cache_folder/$patches_src_folder/patches/$major_version/*.patch patches
+# Add Arch upstream patches 
+echo "Creating symlink to Arch upstream patches ..."
+ln -s ../base/patches/$major_version patches
+
+# Add Surface device patches
+echo "Creating symlink to Surface device patches ..."
+ln -s ../$cache_folder/$patches_src_folder $patches_src_folder
 
 # Add version-specific configuration file
-echo "Copying v$major_version .config file to build directory ..."
+echo "Copying v$major_version .config file ..."
 versioned_config="config.$major_version"
-cp ../configs/$versioned_config .
+cp ../base/configs/$versioned_config .
 mv $versioned_config .config
 
 # Update package checksums to account for new configuration file

@@ -17,6 +17,7 @@ makedepends=('xmlto' 'kmod' 'inetutils' 'bc' 'libelf')
 options=('!strip')
 source=(
   git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+  git://github.com/jakeday/linux-surface.git
   .config        # kernel configuration file
   60-linux.hook  # pacman hook for depmod
   90-linux.hook  # pacman hook for initramfs regeneration
@@ -27,12 +28,14 @@ validpgpkeys=(
   '647F28654894E3BD457199BE38DBBDC86092693E'  # Greg Kroah-Hartman
 )
 sha256sums=('SKIP'
+            'SKIP'
             'ae2e95db94ef7176207c690224169594d49445e04249d2499e9d2fbc117a0b21'
             'ae2e95db94ef7176207c690224169594d49445e04249d2499e9d2fbc117a0b21'
             '75f99f5239e03238f88d1a834c50043ec32b1dc568f2cc291b07d04718483919'
             '1f4c2486c0ea885919732e69d8855cf4f52f0d5fc503b90f4abb7259fa130e5b')
 
 _srcname=linux-stable
+_patchsrcname=linux-surface
 _kernelname=${pkgbase#linux}
 
 prepare() {
@@ -41,9 +44,11 @@ prepare() {
   # Checkout our relevant kernel version
   git checkout v${pkgver}
 
-  # Apply everything in the patches/ directory 
-  # Note that patches/ is not copied to ${srcdir}
-  for i in ../../patches/*.patch; do patch -p1 < $i; done
+  # Apply Arch upstream patches 
+  for i in ../../patches/${_kernelver}/*.patch; do patch -p1 < $i; done
+
+  # Apply Surface device patches
+  for i in ../${_patchsrcname}/patches/${_kernelver}/*.patch; do patch -p1 < $i; done
 
   # Copy over our configuration file
   cp ../.config .
@@ -56,7 +61,7 @@ prepare() {
   # Don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
 
-  # Get kernel version
+  # Fill int the remaining configuration options 
   make olddefconfig
   make prepare
 
