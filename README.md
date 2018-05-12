@@ -43,8 +43,7 @@ You can either install them with `sudo pacman -U ...` or do something else with 
 ## Post-Installation
 
 Follow [pharra's instructions](https://github.com/pharra/linux-surface) on how to extract
-Surface device firmware from the jakeday's linux-surface repository to your machine. You should
-have a cloned copy of this repository already as a result of the build process.  
+Surface device firmware from the jakeday's linux-surface repository to your machine. 
 
 Once the patched kernel and all firmware is installed, the remaining step is 
 to change your bootloader's configuration to load the updated kernel. Then, `reboot` your system.
