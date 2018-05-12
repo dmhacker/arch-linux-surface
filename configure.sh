@@ -95,8 +95,9 @@ cp ../$cache_folder/$patches_src_folder/patches/$major_version/*.patch patches
 
 # Add version-specific configuration file
 echo "Copying v$major_version .config file to build directory ..."
-cp ../config/config.$major_version .
-mv config.$major_version .config
+versioned_config="config.$major_version"
+cp ../configs/$versioned_config .
+mv $versioned_config .config
 
 # Update package checksums to account for new configuration file
 echo "Updating package checksums ..."
