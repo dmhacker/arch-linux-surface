@@ -1,5 +1,5 @@
 post_install() {
-    echo "Updating module dependencies ..."
+    echo "Updating module dependencies. Please wait ..." 
     depmod %KERNVER%
 }
 
