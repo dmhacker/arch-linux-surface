@@ -45,10 +45,16 @@ prepare() {
   git checkout v${pkgver}
 
   # Apply Arch upstream patches 
-  for i in ../../patches/${_kernelver}/*.patch; do patch -p1 < $i; done
+  _patchfolder=../../patches/${_kernelver}/*.patch
+  if [ -d ${_patchfolder} ]; then
+    for i in ${_patchfolder}; do patch -p1 < $i; done
+  fi
 
   # Apply Surface device patches
-  for i in ../${_patchsrcname}/patches/${_kernelver}/*.patch; do patch -p1 < $i; done
+  _patchfolder=../${_patchsrcname}/patches/${_kernelver}/*.patch
+  if [ -d ${_patchfolder} ]; then
+    for i in ${_patchfolder}; do patch -p1 < $i; done
+  fi
 
   # Copy over our configuration file
   cp ../.config .
