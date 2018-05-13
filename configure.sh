@@ -39,6 +39,11 @@ kernel_src_folder=linux-stable
 patches_repository=git://github.com/jakeday/linux-surface.git
 patches_src_folder=linux-surface
 
+kernel_suffix="-surface"
+if [ "$major_version" = "4.14" ]; then
+  kernel_suffix="-lts-surface"
+fi
+
 ############################### CACHE UPDATES ############################### 
 
 # The cache is used for holding the large linux-stable and linux-surface repositories
@@ -76,9 +81,10 @@ cd $build_folder
 
 # Fill in blank variables in PKGBUILD
 echo "Adjusting PKGBUILD version ..."
-pkgbuild=`cat PKGBUILD` 
-pkgbuild="${pkgbuild/\{0\}/$major_version}"
-pkgbuild="${pkgbuild/\{1\}/$version}"
+pkgbuild=`cat PKGBUILD`
+pkgbuild="${pkgbuild/\{0\}/$kernel_suffix}"
+pkgbuild="${pkgbuild/\{1\}/$major_version}"
+pkgbuild="${pkgbuild/\{2\}/$version}"
 echo "$pkgbuild" > PKGBUILD
 
 # Add kernel repository 

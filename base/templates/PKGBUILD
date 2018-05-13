@@ -4,11 +4,12 @@
 # Modified by: David Hacker <dmhacker.cs@gmail.com>
 
 # Variable values are updated by the Makefile
-_kernelver={0}
-pkgver={1}
+_kernelname={0}
+_kernelver={1}
+pkgver={2}
 
 # Standard package variables
-pkgbase=linux-surface
+pkgbase=linux${_kernelname}
 pkgrel=1
 arch=('x86_64')
 url="https://www.kernel.org/"
@@ -36,7 +37,6 @@ sha256sums=('SKIP'
 
 _srcname=linux-stable
 _patchsrcname=linux-surface
-_kernelname=${pkgbase#linux}
 
 prepare() {
   cd ${_srcname}
