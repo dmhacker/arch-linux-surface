@@ -68,6 +68,10 @@ fi
 # Exit the cache folder 
 cd ..
 
+# Create empty patch directories for versions 4.14, 4.15
+mkdir -p "base/patches/4.14"
+mkdir -p "base/patches/4.15"
+
 ############################### BUILD UPDATES ############################### 
 
 # Copy templates
