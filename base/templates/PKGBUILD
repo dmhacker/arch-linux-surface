@@ -63,12 +63,9 @@ prepare() {
   # Don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
 
-  # Fill int the remaining configuration options 
-  make olddefconfig
+  # Fill in the remaining configuration options 
+  yes "" | make oldconfig
   make prepare
-
-  # Rewrite configuration
-  yes "" | make config > /dev/null
 }
 
 build() {
