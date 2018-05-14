@@ -41,7 +41,7 @@ patches_src_folder=linux-surface
 
 kernel_suffix="-surface"
 if [ "$major_version" = "4.14" ]; then
-  kernel_suffix="-lts-surface"
+  kernel_suffix="-surface-lts"
 fi
 
 ############################### CACHE UPDATES ############################### 
