@@ -47,14 +47,13 @@ prepare() {
   # Apply Arch upstream patches 
   _patchfolder=../../patches/${_kernelver}/*.patch
   if [ -d ${_patchfolder} ]; then
+    echo "Applying Arch upstream patches ..."
     for i in ${_patchfolder}; do patch -p1 < $i; done
   fi
 
   # Apply Surface device patches
-  _patchfolder=../${_patchsrcname}/patches/${_kernelver}/*.patch
-  if [ -d ${_patchfolder} ]; then
-    for i in ${_patchfolder}; do patch -p1 < $i; done
-  fi
+  echo "Applying Surface device patches ..."
+  for i in ../${_patchsrcname}/patches/${_kernelver}/*.patch; do patch -p1 < $i; done
 
   # Copy over our configuration file
   cp ../.config .
