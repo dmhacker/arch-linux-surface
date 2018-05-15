@@ -1,14 +1,14 @@
 # $Id$
-# Maintainer: Tobias Powalowski <tpowa@archlinux.org>
-# Maintainer: Thomas Baechler <thomas@archlinux.org>
-# Modified by: David Hacker <dmhacker.cs@gmail.com>
+# Maintainer: David Hacker <dmhacker.cs@gmail.com>
+# Contributor: Tobias Powalowski <tpowa@archlinux.org>
+# Contributor: Thomas Baechler <thomas@archlinux.org>
 
-# Variable values are updated by the Makefile
+# Version variables filled in by the configure script 
 _kernelname={0}
 _kernelver={1}
-pkgver={2}
 
 # Standard package variables
+pkgver={2}
 pkgbase=linux${_kernelname}
 pkgrel=1
 arch=('x86_64')
@@ -35,6 +35,7 @@ sha256sums=('SKIP'
             '75f99f5239e03238f88d1a834c50043ec32b1dc568f2cc291b07d04718483919'
             '1f4c2486c0ea885919732e69d8855cf4f52f0d5fc503b90f4abb7259fa130e5b')
 
+# Source directory names for kernel and patches
 _srcname=linux-stable
 _patchsrcname=linux-surface
 
