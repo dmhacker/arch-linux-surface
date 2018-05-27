@@ -63,6 +63,9 @@ prepare() {
   # Don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
 
+  # Add an empty .scmversion file to prevent '+' in kernel name
+  touch .scmversion
+
   # Fill in the remaining configuration options 
   yes "" | make oldconfig
   make prepare
