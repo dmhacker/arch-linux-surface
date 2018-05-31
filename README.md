@@ -15,22 +15,18 @@ cd arch-linux-surface
 
 Before you begin compiling and installing the patched kernel, it's recommended that you 
 install all necessary firmware that your Surface device needs. 
-You can do this by running the `setup.sh` script with `sudo` permissions:
+You can do this by running the `setup.sh` script with superuser permissions.
 
 ```
 sudo sh /setup.sh
 ```
 
 To generate the build directory for the kernel, you need to run the `configure.sh` script.<br>
-The packager will prompt for the target major version of the Linux kernel during configuration.<br>
-Optionally, you can pass the major version as an argument to configure. e.g.
+The packager will prompt for the target major version of the Linux kernel during configuration.
 
 ```
-./configure.sh 
-./configure.sh 4.16
+sh configure.sh 
 ```
-
-<sup><sub>\* Both of these are valid.</sub></sup>
 
 Once configure is finished, it will output a directory titled `build-[VERSION]`.<br>
 Note that [VERSION] is the full version of the kernel and not just its major version.<br>
