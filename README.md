@@ -14,8 +14,7 @@ cd arch-linux-surface
 ```
 
 Before you begin compiling and installing the patched kernel, it's recommended that you 
-install all necessary firmware that your Surface device needs.<br>
-This will prompt for installation of Surface-specific firmware.<br> 
+install all necessary firmware that your Surface device needs. 
 You can do this by running the `setup.sh` script with `sudo` permissions:
 
 ```
