@@ -43,6 +43,18 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "Done copying config files."
 fi
 
+# Prompt for replacement of suspend with hibernate
+echo
+read -r -p "Replace suspend with hibernate? [Y/n] "
+
+# User selected 'yes' option
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  echo "Symlinking suspend target/service to hibernate target/service ..."
+  ln -sf /lib/systemd/system/hibernate.target /etc/systemd/system/suspend.target
+  ln -sf /lib/systemd/system/systemd-hibernate.service /etc/systemd/system/systemd-suspend.service
+  echo "Done replacing suspend with hibernate."
+fi
+
 # Prompt for installation of Marvel firmware
 echo
 read -r -p "Install Marvel firmware for WiFi? [Y/n] "
