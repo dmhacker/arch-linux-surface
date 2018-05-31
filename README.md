@@ -6,18 +6,32 @@ to the Linux kernel of your choice.
 
 ## Building
 
+First thing you're going to want to do is to clone this repository:
+
 ```
 git clone https://github.com/dmhacker/arch-linux-surface
 cd arch-linux-surface
-./configure.sh
 ```
 
+Before you begin compiling and installing the patched kernel, it's recommended that you 
+install all necessary firmware that your Surface device needs.<br>
+This will prompt for installation of Surface-specific firmware.<br> 
+You can do this by running the `setup.sh` script with `sudo` permissions:
+
+```
+sudo sh /setup.sh
+```
+
+To generate the build directory for the kernel, you need to run the `configure.sh` script.<br>
 The packager will prompt for the target major version of the Linux kernel during configuration.<br>
 Optionally, you can pass the major version as an argument to configure. e.g.
 
 ```
+./configure.sh 
 ./configure.sh 4.16
 ```
+
+<sup><sub>\* Both of these are valid.</sub></sup>
 
 Once configure is finished, it will output a directory titled `build-[VERSION]`.<br>
 Note that [VERSION] is the full version of the kernel and not just its major version.<br>
