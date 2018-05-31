@@ -18,7 +18,7 @@ install all necessary firmware that your Surface device needs and replace suspen
 You can do this by running the `setup.sh` script with superuser permissions.
 
 ```
-sudo sh /setup.sh
+sudo sh setup.sh
 ```
 
 To generate the build directory for the kernel, you need to run the `configure.sh` script.<br>
