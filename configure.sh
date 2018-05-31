@@ -106,6 +106,9 @@ mv $versioned_config .config
 echo "Updating package checksums ..."
 updpkgsums
 
+# Exit the build directory
+cd ..
+
 ############################### NEXT INSTRUCTIONS ############################### 
 
 nproc=`grep -c ^processor /proc/cpuinfo`
@@ -113,6 +116,7 @@ echo ""
 echo "Build files for patched Linux kernel v$version are in $build_folder."
 echo "The following command can be used to build the kernel packages."
 echo ""
-echo "cd $build_folder && MAKEFLAGS=\"-j$nproc\" makepkg -sc"
+echo "cd $build_folder"
+echo "MAKEFLAGS=\"-j$nproc\" makepkg -sc"
 echo ""
 echo "You can optionally provide the -i flag to makepkg to install the kernel after build."

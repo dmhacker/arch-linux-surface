@@ -30,10 +30,11 @@ sh configure.sh
 
 Once configure is finished, it will output a directory titled `build-[VERSION]`.<br>
 Note that [VERSION] is the full version of the kernel and not just its major version.<br>
-To build this kernel, use the command: 
+To build this kernel, use these two commands: 
 
 ```
-cd build-[VERSION] && MAKEFLAGS="-j[NPROC]" makepkg -sc
+cd build-[VERSION] 
+MAKEFLAGS="-j[NPROC]" makepkg -sc
 ```
 
 <sup><sub>\* Replace [VERSION] with whatever kernel version configure outputs.<br></sub></sup>
