@@ -110,7 +110,7 @@ cd ..
 nproc=`grep -c ^processor /proc/cpuinfo`
 echo ""
 echo "Build files for patched Linux kernel v$version are in $build_folder."
-echo "The following command can be used to build the kernel packages."
+echo "The following commands can be used to build the kernel packages."
 echo ""
 echo "cd $build_folder"
 echo "MAKEFLAGS=\"-j$nproc\" makepkg -sc"
