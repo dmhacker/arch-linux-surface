@@ -4,7 +4,7 @@ This is an Arch Linux packager that applies
 [jakeday's patches for Surface devices](https://github.com/jakeday/linux-surface) 
 to the Linux kernel of your choice. 
 
-## Building
+## Pre-Installation
 
 First thing you're going to want to do is to clone this repository:
 
@@ -20,6 +20,11 @@ You can do this by running the `setup.sh` script with superuser permissions.
 ```
 sudo sh setup.sh
 ```
+
+Now, you are ready to begin compilation of your kernel. Alternatively, you could download the [pre-built
+kernel binaries](https://github.com/dmhacker/arch-linux-surface/releases) and skip ahead to the installation section.
+
+## Compilation
 
 To generate the build directory for the kernel, you need to run the `configure.sh` script.<br>
 The packager will prompt for the target major version of the Linux kernel during configuration.
@@ -49,11 +54,3 @@ linux-surface-headers-[VERSION]-1-x86_64.pkg.tar.xz
 linux-surface-docs-[VERSION]-1-x86_64.pkg.tar.xz
 ```
 You can either install them with `sudo pacman -U ...` or do something else with them.
-
-## Post-Installation
-
-Follow [pharra's instructions](https://github.com/pharra/linux-surface) on how to extract
-Surface device firmware from the jakeday's linux-surface repository to your machine. 
-
-Once the patched kernel and all firmware is installed, the remaining step is 
-to change your bootloader's configuration to load the updated kernel. Then, `reboot` your system.
