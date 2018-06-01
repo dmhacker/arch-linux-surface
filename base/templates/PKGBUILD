@@ -1,4 +1,4 @@
-# Maintainer: David Hacker <dmhacker.cs@gmail.com>
+# Maintainer: David Hacker <dmhacker@protonmail.com>
 # Contributor: Tobias Powalowski <tpowa@archlinux.org>
 # Contributor: Thomas Baechler <thomas@archlinux.org>
 
@@ -11,7 +11,7 @@ pkgver={2}
 pkgbase=linux${_kernelname}
 pkgrel=1
 arch=('x86_64')
-url="https://www.kernel.org/"
+url="https://github.com/dmhacker/arch-linux-surface"
 license=('GPL2')
 makedepends=('xmlto' 'kmod' 'inetutils' 'bc' 'libelf')
 options=('!strip')
