@@ -21,8 +21,8 @@ You can do this by running the `setup.sh` script with superuser permissions.
 sudo sh setup.sh
 ```
 
-Now, you are ready to begin compilation of your kernel. Alternatively, you could download the [pre-built
-kernel binaries](https://github.com/dmhacker/arch-linux-surface/releases) and skip ahead to the installation section.
+Now, you are ready to begin compilation of your kernel.<br>
+Alternatively, you could download the [pre-built kernel binaries](https://github.com/dmhacker/arch-linux-surface/releases) and skip ahead to the installation section.
 
 ## Compilation
 
