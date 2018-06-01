@@ -102,10 +102,6 @@ versioned_config="config.$major_version"
 cp ../base/configs/$versioned_config .
 mv $versioned_config .config
 
-# Update package checksums to account for new configuration file
-echo "Updating package checksums ..."
-updpkgsums
-
 # Exit the build directory
 cd ..
 
