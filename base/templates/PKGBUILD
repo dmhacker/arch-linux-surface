@@ -68,13 +68,13 @@ prepare() {
 
   # Fill in the remaining configuration options 
   yes "" | make oldconfig
-  make LOCALVERSION= prepare
+  make prepare
 }
 
 build() {
   cd ${_srcname}
 
-  make LOCALVERSION= bzImage modules
+  make bzImage modules
 }
 
 _package() {
