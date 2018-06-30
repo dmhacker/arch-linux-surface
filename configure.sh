@@ -21,7 +21,7 @@ case $major_version in
     version="4.16.16"
     ;;
   "4.17")
-    version="4.17.2"
+    version="4.17.3"
     ;;
   *)
     echo "Invalid selection!"
