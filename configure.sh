@@ -5,7 +5,7 @@
 # User did not enter a major version selection, prompt for one
 if [ "$1" = "" ]; then
   echo "Which kernel version do you want to build?"
-  select major_version in "4.14" "4.16" "4.17"; do
+  select major_version in "4.14" "4.17"; do
     break;
   done
 else
@@ -17,15 +17,12 @@ case $major_version in
   "4.14")
     version="4.14.50"
     ;;
-  "4.16")
-    version="4.16.16"
-    ;;
   "4.17")
-    version="4.17.3"
+    version="4.17.8"
     ;;
   *)
     echo "Invalid selection!"
-    echo "Valid options are 4.14, 4.16, 4.17."
+    echo "Valid options are 4.14, 4.17."
     exit 1
     ;;
 esac
