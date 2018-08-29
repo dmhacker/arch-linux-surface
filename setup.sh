@@ -30,22 +30,22 @@ cd ..
 
 # Prompt for installation of root files
 echo
-read -r -p "Copy config files from jakeday's kernel to root? [Y/n] "
+read -r -p "Copy config files from jakeday's kernel to root? [y/N] "
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "Unpacking files to / ..."
   cp -r $cache_folder/$patches_src_folder/root/etc/* /etc
   mkdir -p /lib/systemd/system-sleep
-  cp $cache_folder/$patches_src_folder/root/lib/systemd/system-sleep/hibernate /lib/systemd/system-sleep
+  cp $cache_folder/$patches_src_folder/root/lib/systemd/system-sleep/sleep /lib/systemd/system-sleep
 
-  echo "Making /lib/systemd/system-sleep/hibernate executable ..."
-  chmod a+x /lib/systemd/system-sleep/hibernate
+  echo "Making /lib/systemd/system-sleep/sleep executable ..."
+  chmod a+x /lib/systemd/system-sleep/sleep
   
   echo "Done copying config files."
 fi
 
 # Prompt for replacement of suspend with hibernate
 echo
-read -r -p "Replace suspend with hibernate? [Y/n] "
+read -r -p "Replace suspend with hibernate? [y/N] "
 
 # User selected 'yes' option
 if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -57,7 +57,7 @@ fi
 
 # Prompt for installation of Marvel firmware
 echo
-read -r -p "Install Marvel firmware for WiFi? [Y/n] "
+read -r -p "Install Marvel firmware for WiFi? [y/N] "
 
 # User selected 'yes' option 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -69,7 +69,7 @@ fi
 
 # Prompt for installation for IPTS firmware
 echo
-read -r -p "Install IPTS firmware to enable the touchscreen? [Y/n] "
+read -r -p "Install IPTS firmware to enable the touchscreen? [y/N] "
 
 # User selected 'yes' option 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
