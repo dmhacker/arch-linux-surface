@@ -15,10 +15,10 @@ fi
 # Convert major version (e.g. 4.14) to full version (e.g. 4.14.40)
 case $major_version in
   "4.14")
-    version="4.14.50"
+    version="4.14.67"
     ;;
   "4.17")
-    version="4.17.11"
+    version="4.17.19"
     ;;
   *)
     echo "Invalid selection!"
