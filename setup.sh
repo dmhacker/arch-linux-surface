@@ -83,6 +83,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   i915_folder=/lib/firmware/i915/
   intel_ipts_folder=/lib/firmware/intel/ipts/
   nvidia_folder=/lib/firmware/nvidia/gp108/
+  ath10k_folder=/lib/firmware/ath10k
 
   case $SURFACE_MODEL in
     "Surface Pro 3")
@@ -151,6 +152,11 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
       echo "Unpacking files to $nvidia_folder ..."
       mkdir -p $nvidia_folder
       unzip -o $firmware_src_folder/nvidia_firmware_gp108.zip -d $nvidia_folder
+      ;;
+    "Surface Go")
+      echo "Unpacking files to $ath10k_folder ..."
+      mkdir -p $ath10k_folder
+      unzip -o $firmware_src_folder/ath10k_firmware.zip -d $ath10k_folder
       ;;
     *)
       echo "Invalid selection. Moving on."
