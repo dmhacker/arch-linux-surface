@@ -18,6 +18,7 @@ options=('!strip')
 source=(
   git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
   git://github.com/jakeday/linux-surface.git
+  git://github.com/qzed/linux-surfacegen5-acpi-notify.git
   .config        # kernel configuration file
   60-linux.hook  # pacman hook for depmod
   90-linux.hook  # pacman hook for initramfs regeneration
@@ -30,6 +31,7 @@ validpgpkeys=(
 sha256sums=('SKIP'
             'SKIP'
             'SKIP'
+            'SKIP'
             'ae2e95db94ef7176207c690224169594d49445e04249d2499e9d2fbc117a0b21'
             '75f99f5239e03238f88d1a834c50043ec32b1dc568f2cc291b07d04718483919'
             'ad6344badc91ad0630caacde83f7f9b97276f80d26a20619a87952be65492c65')
@@ -37,6 +39,7 @@ sha256sums=('SKIP'
 # Source directory names for kernel and patches
 _srcname=linux-stable
 _patchsrcname=linux-surface
+_batsrcname=linux-surfacegen5-acpi-notify
 
 prepare() {
   cd ${_srcname}
@@ -51,6 +54,10 @@ prepare() {
   # Apply Surface device patches
   echo "Applying Surface device patches ..."
   for i in ../${_patchsrcname}/patches/${_kernelver}/*.patch; do patch -p1 < $i; done
+
+  # Apply Surface battery patches
+  echo "Applying Surface battery patches ..."
+  for i in ../${_batsrcname}/patches/${_kernelver}/*.patch; do patch -p1 < $i; done
 
   # Copy over our configuration file
   cp ../.config .

@@ -35,6 +35,8 @@ kernel_repository=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-sta
 kernel_src_folder=linux-stable
 patches_repository=git://github.com/jakeday/linux-surface.git
 patches_src_folder=linux-surface
+battery_repository=git://github.com/qzed/linux-surfacegen5-acpi-notify.git
+battery_src_folder=linux-surfacegen5-acpi-notify
 
 kernel_suffix="-surface"
 if [ "$major_version" = "4.14" ]; then
@@ -60,6 +62,13 @@ if [ -d $patches_src_folder ]; then
   cd $patches_src_folder && git pull && cd ..
 else
   git clone $patches_repository $patches_src_folder
+fi
+
+# Do the same with the battery repository
+if [ -d $battery_src_folder ]; then
+  cd $battery_src_folder && git pull && cd ..
+else
+  git clone $battery_repository $battery_src_folder
 fi
 
 # Exit the cache folder 
@@ -95,6 +104,10 @@ ln -s ../base/patches patches
 # Add Surface device patches
 echo "Creating symlink to Surface device patches ..."
 ln -s ../$cache_folder/$patches_src_folder $patches_src_folder
+
+# Add battery patches
+echo "Creating symlink to Surface battery patches ..."
+ln -s ../$cache_folder/$battery_src_folder $battery_src_folder
 
 # Add version-specific configuration file
 echo "Copying v$major_version .config file ..."
