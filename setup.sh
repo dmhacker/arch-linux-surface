@@ -109,6 +109,15 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
       mkdir -p $i915_folder 
       unzip -o $firmware_src_folder/i915_firmware_kbl.zip -d $i915_folder 
       ;;
+    "Surface Pro 6")
+      echo "Unpacking files to $intel_ipts_folder ..."
+      mkdir -p $intel_ipts_folder 
+      unzip -o $firmware_src_folder/ipts_firmware_v102.zip -d $intel_ipts_folder 
+
+      echo "Unpacking files to $i915_folder ..."
+      mkdir -p $i915_folder 
+      unzip -o $firmware_src_folder/i915_firmware_kbl.zip -d $i915_folder 
+      ;;
     "Surface Laptop")
       echo "Unpacking files to $intel_ipts_folder ..."
       mkdir -p $intel_ipts_folder 
