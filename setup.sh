@@ -74,7 +74,7 @@ read -r -p "Install IPTS firmware to enable the touchscreen? [y/N] "
 # User selected 'yes' option 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "What Surface model is your device? Enter the number corresponding to your selection."
-  select SURFACE_MODEL in "Surface Pro 3" "Surface Pro 4" "Surface Pro 2017" "Surface Laptop" "Surface Book" "Surface Book 2 13\"" "Surface Book 2 15\""; do
+  select SURFACE_MODEL in "Surface Pro 3" "Surface Pro 4" "Surface Pro 2017" "Surface Pro 6" "Surface Laptop" "Surface Book" "Surface Book 2 13\"" "Surface Book 2 15\""; do
     break;
   done
 
