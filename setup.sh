@@ -74,7 +74,7 @@ read -r -p "Install IPTS firmware to enable the touchscreen? [y/N] "
 # User selected 'yes' option 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "What Surface model is your device? Enter the number corresponding to your selection."
-  select SURFACE_MODEL in "Surface Pro 3" "Surface Pro 4" "Surface Pro 2017" "Surface Laptop" "Surface Book" "Surface Book 2 13\"" "Surface Book 2 15\""; do
+  select SURFACE_MODEL in "Surface Pro 3" "Surface Pro 4" "Surface Pro 2017" "Surface Pro 6" "Surface Laptop" "Surface Book" "Surface Book 2 13\"" "Surface Book 2 15\""; do
     break;
   done
 
@@ -101,6 +101,15 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
       unzip -o $firmware_src_folder/i915_firmware_skl.zip -d $i915_folder 
       ;;
     "Surface Pro 2017")
+      echo "Unpacking files to $intel_ipts_folder ..."
+      mkdir -p $intel_ipts_folder 
+      unzip -o $firmware_src_folder/ipts_firmware_v102.zip -d $intel_ipts_folder 
+
+      echo "Unpacking files to $i915_folder ..."
+      mkdir -p $i915_folder 
+      unzip -o $firmware_src_folder/i915_firmware_kbl.zip -d $i915_folder 
+      ;;
+    "Surface Pro 6")
       echo "Unpacking files to $intel_ipts_folder ..."
       mkdir -p $intel_ipts_folder 
       unzip -o $firmware_src_folder/ipts_firmware_v102.zip -d $intel_ipts_folder 
