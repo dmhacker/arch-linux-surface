@@ -13,17 +13,6 @@ git clone https://github.com/dmhacker/arch-linux-surface
 cd arch-linux-surface
 ```
 
-If you want to build the kernel with qzed's 
-[experimental battery support](https://github.com/qzed/linux-surfacegen5-acpi-notify), 
-switch to the feature-battery branch by running:
-
-```
-git checkout feature-battery 
-```
-
-The master branch will be kept as pure as possible, meaning that only patches from
-jakeday's kernel will be applied to the latest version of the Linux kernel. 
-
 Before you begin compiling & installing the patched kernel, it's recommended that you 
 install all necessary firmware that your Surface device needs and replace suspend with hibernate.
 You can do this by running the `setup.sh` script with superuser permissions.
@@ -33,7 +22,9 @@ sudo sh setup.sh
 ```
 
 Now, you are ready to begin compilation of your kernel.<br>
-Alternatively, you could download the [pre-built kernel binaries](https://github.com/dmhacker/arch-linux-surface/releases) and skip ahead to the installation section.
+Alternatively, you could download the 
+[pre-built kernel binaries](https://github.com/dmhacker/arch-linux-surface/releases) 
+and skip ahead to the installation section.
 
 ## Compilation
 
