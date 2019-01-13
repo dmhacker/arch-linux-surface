@@ -47,6 +47,13 @@ MAKEFLAGS="-j[NPROC]" makepkg -sc
 <sup><sub>\* Replace [VERSION] with whatever kernel version configure outputs.<br></sub></sup>
 <sup><sub>\*\* Replace [NPROC] with the number of available processors in your machine.</sub></sup>
 
+If you are unable to issue this command because of write permission issues, use the following
+command to give yourself access, replacing [USER] and [VERSION] with their appropriate values:
+
+```
+chown -R [USER] build-[VERSION]
+```
+
 ## Installation
 
 When the build process is completed, under `build-[VERSION]`, you will find these packages:
