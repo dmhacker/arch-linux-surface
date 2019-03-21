@@ -67,6 +67,18 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "Done installing Marvel firmware."
 fi
 
+# Prompt for installation of mwlwifi firmware
+echo
+read -r -p "Install mwlwifi firmware for WiFi? [y/N] "
+
+# User selected 'yes' option 
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  echo "Unpacking files to /lib/firmware/mwlwifi ..."
+  mkdir -p /lib/firmware/mwlwifi/
+  unzip -o $firmware_src_folder/mwlwifi_firmware.zip -d /lib/firmware/mwlwifi
+  echo "Done installing mwlwifi firmware."
+fi
+
 # Prompt for installation for IPTS firmware
 echo
 read -r -p "Install IPTS firmware to enable the touchscreen? [y/N] "
