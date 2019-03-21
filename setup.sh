@@ -55,33 +55,26 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "Done replacing suspend with hibernate."
 fi
 
-# Prompt for installation of Marvel firmware
+# Prompt for installation of WiFi firmware
 echo
-read -r -p "Install Marvel firmware for WiFi? [y/N] "
+read -r -p "Install WiFi firmware (marvel, mwlwifi)? [y/N] "
 
 # User selected 'yes' option 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "Unpacking files to /lib/firmware/mrvl ..."
   mkdir -p /lib/firmware/mrvl/
   unzip -o $firmware_src_folder/mrvl_firmware.zip -d /lib/firmware/mrvl
-  echo "Done installing Marvel firmware."
-fi
+  echo "Done installing marvel firmware."
 
-# Prompt for installation of mwlwifi firmware
-echo
-read -r -p "Install mwlwifi firmware for WiFi? [y/N] "
-
-# User selected 'yes' option 
-if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "Unpacking files to /lib/firmware/mwlwifi ..."
   mkdir -p /lib/firmware/mwlwifi/
   unzip -o $firmware_src_folder/mwlwifi_firmware.zip -d /lib/firmware/mwlwifi
   echo "Done installing mwlwifi firmware."
 fi
 
-# Prompt for installation for IPTS firmware
+# Prompt for installation for model-based firmware
 echo
-read -r -p "Install IPTS firmware to enable the touchscreen? [y/N] "
+read -r -p "Install device-specific firmware (touchscreen, wireless, GPU)? [y/N] "
 
 # User selected 'yes' option 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -90,7 +83,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     break;
   done
 
-  echo "Now installing IPTS firmware for the $SURFACE_MODEL ..."
+  echo "$SURFACE_MODEL selected. Installing firmware ..."
 
   i915_folder=/lib/firmware/i915/
   intel_ipts_folder=/lib/firmware/intel/ipts/
