@@ -15,10 +15,10 @@ fi
 # Convert major version (e.g. 4.14) to full version (e.g. 4.14.40)
 case $major_version in
   "4.19")
-    version="4.19.27"
+    version="4.19.34"
     ;;
   "5.0")
-    version="5.0.1"
+    version="5.0.7"
     ;;
   *)
     echo "Invalid selection!"
@@ -36,7 +36,7 @@ patches_repository=git://github.com/jakeday/linux-surface.git
 patches_src_folder=linux-surface
 
 kernel_suffix="-surface"
-if [ "$major_version" = "4.14" ]; then
+if [ "$major_version" = "4.19" ]; then
   kernel_suffix="-surface-lts"
 fi
 
