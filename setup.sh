@@ -3,20 +3,19 @@
 echo "This script was created to simplify the setup process for Surface devices running Arch Linux."
 echo 
 
-cache_folder=.cache
+cache_folder=.cache_setup
 patches_repository=git://github.com/jakeday/linux-surface.git
 patches_src_folder=linux-surface
 firmware_src_folder="$cache_folder/$patches_src_folder/firmware"
 
-############################### CACHE UPDATES ############################### 
+############################### CACHE CREATION ############################### 
 
-# The cache is used for holding the large linux-stable and linux-surface repositories
-# In this script, we only care about the linux-surface repository
-echo "Updating cache ..."
+# This cache is purely temporary (fixes issues with superuser permissions)
+echo "Creating temporary cache ..."
 mkdir -p $cache_folder
 cd $cache_folder
 
-# Do the same with the patches repository
+# Only the patches repository needs to be tracked
 if [ -d $patches_src_folder ]; then
   cd $patches_src_folder && git pull && cd ..
 else
@@ -177,6 +176,13 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
       ;;
   esac
 fi
+
+############################### CACHE REMOVAL ###############################
+
+# Remove the cache folder to handle permission issues
+echo ""
+echo "Removing temporary cache ..."
+rm -rf $cache_folder
 
 # Yay! All done.
 echo 
