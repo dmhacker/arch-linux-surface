@@ -50,7 +50,7 @@ prepare() {
 
   # Apply Surface device patches
   echo "Applying Surface device patches ..."
-  for i in ../${_patchsrcname}/patches/${_kernelver}/*.patch; do patch -p1 < $i; done
+  for i in ../../${_patchsrcname}/patches/${_kernelver}/*.patch; do patch -p1 < $i; done
 
   # Copy over our configuration file
   cp ../.config .
