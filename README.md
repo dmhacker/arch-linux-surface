@@ -63,3 +63,11 @@ linux-surface-headers-[VERSION]-1-x86_64.pkg.tar.xz
 linux-surface-docs-[VERSION]-1-x86_64.pkg.tar.xz
 ```
 You can either install them with `sudo pacman -U ...` or do something else with them.
+
+## Troubleshooting
+
+For touchscreen issues, consider looking at [issue #56](https://github.com/dmhacker/arch-linux-surface/issues/56).
+
+For stylus issues, consider looking at [issue #8](https://github.com/dmhacker/arch-linux-surface/issues/8).
+
+Please do not create new issues regarding these problems if you have not tried to fix them using the above guides.
