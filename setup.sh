@@ -22,14 +22,14 @@ else
   git clone $patches_repository $patches_src_folder
 fi
 
-# Exit the cache folder 
+# Exit the cache folder
 cd ..
 
 ############################### INSTALLATION ############################### 
 
 # Prompt for installation of root files
 echo
-read -r -p "Copy config files from jakeday's kernel to root? [y/N] "
+read -r -p "1. Copy config files from jakeday's kernel to root? [y/N] "
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "Unpacking files to / ..."
   cp -r $cache_folder/$patches_src_folder/root/etc/* /etc
@@ -42,11 +42,20 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "Done copying config files."
 fi
 
+# Prompt for modules upload & mkinitcpio rebuild
+echo
+echo "!!! The following option is Arch-specific. Potentially fixes touchscreen issues. !!!"
+read -r -p "2. Rebuild kernel with modules from /etc/initramfs-tools/modules? [y/N] "
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    modules=$(echo "MODULES=($(grep -v '^#' /etc/initramfs-tools/modules))" | tr "\n" " " | sed 's/ *$//g')
+    sed -i "/^MODULES=()/c\\$modules" /etc/mkinitcpio.conf
+    echo "Replacing MODULES=() in /etc/mkinitcpio.conf with $modules."
+    mkinitcpio
+fi
+
 # Prompt for replacement of suspend with hibernate
 echo
-read -r -p "Replace suspend with hibernate? [y/N] "
-
-# User selected 'yes' option
+read -r -p "3. Replace suspend with hibernate? [y/N] "
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "Symlinking suspend target/service to hibernate target/service ..."
   ln -sf /lib/systemd/system/hibernate.target /etc/systemd/system/suspend.target
@@ -56,9 +65,7 @@ fi
 
 # Prompt for installation of WiFi firmware
 echo
-read -r -p "Install WiFi firmware (marvel, mwlwifi)? [y/N] "
-
-# User selected 'yes' option 
+read -r -p "4. Install WiFi firmware (marvel, mwlwifi)? [y/N] "
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "Unpacking files to /lib/firmware/mrvl ..."
   mkdir -p /lib/firmware/mrvl/
@@ -73,9 +80,7 @@ fi
 
 # Prompt for installation for model-based firmware
 echo
-read -r -p "Install device-specific firmware (touchscreen, wireless, GPU)? [y/N] "
-
-# User selected 'yes' option 
+read -r -p "5. Install device-specific firmware (touchscreen, wireless, GPU)? [y/N] "
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "What Surface model is your device? Enter the number corresponding to your selection."
   select SURFACE_MODEL in "Surface Pro 3" "Surface Pro 4" "Surface Pro 2017" "Surface Pro 6" "Surface Laptop" "Surface Book" "Surface Book 2 13\"" "Surface Book 2 15\"" "Surface Go"; do
