@@ -70,4 +70,6 @@ For touchscreen issues, consider looking at [issue #56](https://github.com/dmhac
 
 For stylus issues, consider looking at [issue #8](https://github.com/dmhacker/arch-linux-surface/issues/8).
 
+For WiFi issues, consider looking at [issue #62](https://github.com/dmhacker/arch-linux-surface/issues/62).
+
 Please do not create new issues regarding these problems if you have not tried to fix them using the above guides.
