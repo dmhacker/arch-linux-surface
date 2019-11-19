@@ -5,7 +5,7 @@
 # User did not enter a major version selection, prompt for one
 if [ "$1" = "" ]; then
   echo "Which kernel version do you want to build?"
-  select major_version in "4.19" "5.1"; do
+  select major_version in "4.19" "5.3"; do
     break;
   done
 else
@@ -17,8 +17,8 @@ case $major_version in
   "4.19")
     version="4.19.56"
     ;;
-  "5.1")
-    version="5.1.15"
+  "5.3")
+    version="5.3.10"
     ;;
   *)
     echo "Invalid selection!"
@@ -32,7 +32,7 @@ cache_folder=.cache
 build_folder=build-${version}
 kernel_repository=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 kernel_src_folder=linux-stable
-patches_repository=git://github.com/jakeday/linux-surface.git
+patches_repository=git://github.com/qzed/linux-surface.git
 patches_src_folder=linux-surface
 
 kernel_suffix="-surface"

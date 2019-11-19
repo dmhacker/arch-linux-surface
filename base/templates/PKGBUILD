@@ -17,7 +17,7 @@ makedepends=('xmlto' 'kmod' 'inetutils' 'bc' 'libelf')
 options=('!strip')
 source=(
   git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
-  git://github.com/jakeday/linux-surface.git
+  git://github.com/qzed/linux-surface.git
   .config        # kernel configuration file
   60-linux.hook  # pacman hook for depmod
   90-linux.hook  # pacman hook for initramfs regeneration
