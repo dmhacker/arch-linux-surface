@@ -4,12 +4,15 @@ This is an Arch Linux packager that applies
 [jakeday's patches for Surface devices](https://github.com/jakeday/linux-surface) 
 to the Linux kernel of your choice. 
 
-As of November 2019,
-the master branch has officially switched over to 
-using [qzed's version of these patches](https://github.com/qzed/linux-surface/)
-since jakeday's repository appears to be no longer
-actively maintained. If you wish to only apply
+As of November 2019, the master branch has officially switched over to 
+using [qzed's version of these patches](https://github.com/qzed/linux-surface/) since jakeday's repository 
+appears to be no longer actively maintained. If you wish to only apply
 jakeday's patches, checkout the branch `jakeday`.
+
+Additionally, please refer to [qzed's custom Arch repository](https://github.com/qzed/linux-surface/wiki/Package-Repositories#arch-linux-repository)
+as another source of builds compatible with Arch Linux.
+This repository will continue to be actively maintained by
+me though, so you are welcome to use either source.
 
 ## Pre-Installation
 
