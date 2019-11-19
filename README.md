@@ -4,7 +4,7 @@ This is an Arch Linux packager that applies
 [jakeday's patches for Surface devices](https://github.com/jakeday/linux-surface) 
 to the Linux kernel of your choice. 
 
-As of November 2019, the master branch has officially switched over to 
+As of November 2019, the `master` branch has officially switched over to 
 using [qzed's version of these patches](https://github.com/qzed/linux-surface/) since jakeday's repository 
 appears to be no longer actively maintained. If you wish to only apply
 jakeday's patches, checkout the branch `jakeday`.
