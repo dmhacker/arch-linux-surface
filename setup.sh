@@ -4,7 +4,7 @@ echo "This script was created to simplify the setup process for Surface devices 
 echo
 
 cache_folder=.cache_setup
-patches_repository=git://github.com/jakeday/linux-surface.git
+patches_repository=git://github.com/qzed/linux-surface.git
 patches_src_folder=linux-surface
 firmware_src_folder="$cache_folder/$patches_src_folder/firmware"
 
@@ -29,7 +29,7 @@ cd ..
 
 # Prompt for installation of root files
 echo
-read -r -p "1. Copy config files from jakeday's kernel to root? [y/N] "
+read -r -p "1. Copy config files from qzed's kernel to root? [y/N] "
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "Unpacking files to / ..."
   cp -r $cache_folder/$patches_src_folder/root/etc/* /etc
