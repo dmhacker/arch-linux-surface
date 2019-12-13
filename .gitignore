@@ -4,3 +4,4 @@
 # No build directories
 build*/
 .cache/
+.cache_setup/

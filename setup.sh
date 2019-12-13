@@ -44,12 +44,14 @@ fi
 
 # Prompt for modules upload & mkinitcpio rebuild
 echo
-echo "!!! The following option is Arch-specific. Potentially fixes touchscreen issues. !!!"
+echo "!!! WARNING !!! The following option will reset the MODULES option in your mkinitcpio config."
+echo "!!! WARNING !!! A backup of /etc/mkinitcpio.conf will be saved to /etc/mkinitcpio.conf.old if you proceed."
 read -r -p "2. Rebuild kernel with modules from /etc/initramfs-tools/modules? [y/N] "
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    modules=$(echo "MODULES=($(grep -v '^#' /etc/initramfs-tools/modules))" | tr "\n" " " | sed 's/ *$//g')
-    sed -i "/^MODULES=()/c\\$modules" /etc/mkinitcpio.conf
-    echo "Replacing MODULES=() in /etc/mkinitcpio.conf with $modules."
+    cp /etc/mkinitcpio.conf /etc/mkinitcpio.conf.backup
+    modules=$(echo "MODULES=($(grep -v '^#' $cache_folder/$patches_src_folder/root/etc/initramfs-tools/modules))" | tr "\n" " " | sed 's/ *$//g')
+    sed -i "/^MODULES=(.*)/c\\$modules" /etc/mkinitcpio.conf
+    echo "$modules will be added to /etc/mkinitcpio.conf."
     mkinitcpio
 fi
 
