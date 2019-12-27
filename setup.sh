@@ -7,19 +7,26 @@ cache_folder=.cache_setup
 patches_repository=git://github.com/qzed/linux-surface.git
 patches_src_folder=linux-surface
 firmware_src_folder="$cache_folder/$patches_src_folder/firmware"
+libwacom_repository=git://github.com/qzed/libwacom-surface.git
+libwacom_src_folder=libwacom-surface
 
 ############################### SETUP ###############################
 
-# This cache is purely temporary (fixes issues with superuser permissions)
+# This cache is temporary (fixes issues with superuser permissions)
 echo "Creating temporary cache ..."
 mkdir -p $cache_folder
 cd $cache_folder
 
-# Only the patches repository needs to be tracked
+# Fetch repositories from GitHub
 if [ -d $patches_src_folder ]; then
   cd $patches_src_folder && git pull && cd ..
 else
   git clone $patches_repository $patches_src_folder
+fi
+if [ -d $libwacom_src_folder ]; then
+  cd $libwacom_src_folder && git pull && cd ..
+else
+  git clone $libwacom_repository $libwacom_src_folder
 fi
 
 # Exit the cache folder
@@ -75,12 +82,23 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "Done installing firmware."
 fi
 
+# Prompt for installation of patched libwacom
+echo
+read -r -p "5. Would you like to replace libwacom with its patched version? [y/N] "
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  echo "Building and installing the patched version of libwacom ..."
+  cd "$cache_folder/$libwacom_src_folder"
+  makepkg -sri --skippgpcheck
+  cd "../.."
+  echo "Done installing patched libwacom."
+fi
+
 ############################### CLEANUP ###############################
 
 # Remove the cache folder to handle permission issues
-echo ""
-echo "Removing temporary cache ..."
-rm -rf $cache_folder
+# echo ""
+# echo "Removing temporary cache ..."
+# rm -rf $cache_folder
 
 # Yay! All done.
 echo
