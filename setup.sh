@@ -8,7 +8,7 @@ patches_repository=git://github.com/qzed/linux-surface.git
 patches_src_folder=linux-surface
 firmware_src_folder="$cache_folder/$patches_src_folder/firmware"
 
-############################### CACHE CREATION ###############################
+############################### SETUP ###############################
 
 # This cache is purely temporary (fixes issues with superuser permissions)
 echo "Creating temporary cache ..."
@@ -65,160 +65,17 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "Done replacing suspend with hibernate."
 fi
 
-# Prompt for installation of WiFi firmware
+# Prompt for installation of firmware
 echo
-read -r -p "4. Install WiFi firmware (marvel, mwlwifi)? [y/N] "
+read -r -p "4. Install all firmware to /lib/firmware? [y/N] "
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-  echo "Unpacking files to /lib/firmware/mrvl ..."
-  mkdir -p /lib/firmware/mrvl/
-  unzip -o $firmware_src_folder/mrvl_firmware.zip -d /lib/firmware/mrvl
-  echo "Done installing marvel firmware."
-
-  echo "Unpacking files to /lib/firmware/mwlwifi ..."
-  mkdir -p /lib/firmware/mwlwifi/
-  unzip -o $firmware_src_folder/mwlwifi_firmware.zip -d /lib/firmware/mwlwifi
-  echo "Done installing mwlwifi firmware."
+  echo "Copying files to /lib/firmware ..."
+  mkdir -p /lib/firmware
+  cp -rv $firmware_src_folder/* /lib/firmware
+  echo "Done installing firmware."
 fi
 
-# Prompt for installation for model-based firmware
-echo
-read -r -p "5. Install device-specific firmware (touchscreen, wireless, GPU)? [y/N] "
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-  echo "What Surface model is your device? Enter the number corresponding to your selection."
-  select SURFACE_MODEL in "Surface Pro 3" "Surface Pro" "Surface Pro 4" "Surface Pro 2017" "Surface Pro 6" "Surface Studio" "Surface Laptop" "Surface Laptop 2" "Surface Book" "Surface Book 2 13\"" "Surface Book 2 15\"" "Surface Go"; do
-    break;
-  done
-
-  echo "$SURFACE_MODEL selected. Installing firmware ..."
-
-  i915_folder=/lib/firmware/i915/
-  intel_ipts_folder=/lib/firmware/intel/ipts/
-  nvidia_folder=/lib/firmware/nvidia/gp108/
-  ath10k_folder=/lib/firmware/ath10k
-
-  case $SURFACE_MODEL in
-    "Surface Pro 3")
-      echo "Unpacking files to $i915_folder ..."
-      mkdir -p $i915_folder
-      unzip -o $firmware_src_folder/i915_firmware_bxt.zip -d $i915_folder
-      ;;
-    "Surface Pro")
-      echo "Unpacking files to $intel_ipts_folder ..."
-      mkdir -p $intel_ipts_folder
-      unzip -o $firmware_src_folder/ipts_firmware_v102.zip -d $intel_ipts_folder
-
-      echo "Unpacking files to $i915_folder ..."
-      mkdir -p $i915_folder
-      unzip -o $firmware_src_folder/i915_firmware_kbl.zip -d $i915_folder
-      ;;
-    "Surface Pro 4")
-      echo "Unpacking files to $intel_ipts_folder ..."
-      mkdir -p $intel_ipts_folder
-      unzip -o $firmware_src_folder/ipts_firmware_v78.zip -d $intel_ipts_folder
-
-      echo "Unpacking files to $i915_folder ..."
-      mkdir -p $i915_folder
-      unzip -o $firmware_src_folder/i915_firmware_skl.zip -d $i915_folder
-      ;;
-    "Surface Pro 2017")
-      echo "Unpacking files to $intel_ipts_folder ..."
-      mkdir -p $intel_ipts_folder
-      unzip -o $firmware_src_folder/ipts_firmware_v102.zip -d $intel_ipts_folder
-
-      echo "Unpacking files to $i915_folder ..."
-      mkdir -p $i915_folder
-      unzip -o $firmware_src_folder/i915_firmware_kbl.zip -d $i915_folder
-      ;;
-    "Surface Pro 6")
-      echo "Unpacking files to $intel_ipts_folder ..."
-      mkdir -p $intel_ipts_folder
-      unzip -o $firmware_src_folder/ipts_firmware_v102.zip -d $intel_ipts_folder
-
-      echo "Unpacking files to $i915_folder ..."
-      mkdir -p $i915_folder
-      unzip -o $firmware_src_folder/i915_firmware_kbl.zip -d $i915_folder
-      ;;
-    "Surface Studio")
-      echo "Unpacking files to $intel_ipts_folder ..."
-      mkdir -p $intel_ipts_folder
-      unzip -o $firmware_src_folder/ipts_firmware_v76.zip -d $intel_ipts_folder
-
-      echo "Unpacking files to $i915_folder ..."
-      mkdir -p $i915_folder
-      unzip -o $firmware_src_folder/i915_firmware_skl.zip -d $i915_folder
-      ;;
-    "Surface Laptop")
-      echo "Unpacking files to $intel_ipts_folder ..."
-      mkdir -p $intel_ipts_folder
-      unzip -o $firmware_src_folder/ipts_firmware_v79.zip -d $intel_ipts_folder
-
-      echo "Unpacking files to $i915_folder ..."
-      mkdir -p $i915_folder
-      unzip -o $firmware_src_folder/i915_firmware_skl.zip -d $i915_folder
-      ;;
-    "Surface Laptop 2")
-      echo "Unpacking files to $intel_ipts_folder ..."
-      mkdir -p $intel_ipts_folder
-      unzip -o $firmware_src_folder/ipts_firmware_v79.zip -d $intel_ipts_folder
-
-      echo "Unpacking files to $i915_folder ..."
-      mkdir -p $i915_folder
-      unzip -o $firmware_src_folder/i915_firmware_skl.zip -d $i915_folder
-      ;;
-    "Surface Book")
-      echo "Unpacking files to $intel_ipts_folder ..."
-      mkdir -p $intel_ipts_folder
-      unzip -o $firmware_src_folder/ipts_firmware_v76.zip -d $intel_ipts_folder
-
-      echo "Unpacking files to $i915_folder ..."
-      mkdir -p $i915_folder
-      unzip -o $firmware_src_folder/i915_firmware_skl.zip -d $i915_folder
-      ;;
-    "Surface Book 2 13\"")
-      echo "Unpacking files to $intel_ipts_folder ..."
-      mkdir -p $intel_ipts_folder
-      unzip -o $firmware_src_folder/ipts_firmware_v137.zip -d $intel_ipts_folder
-
-      echo "Unpacking files to $i915_folder ..."
-      mkdir -p $i915_folder
-      unzip -o $firmware_src_folder/i915_firmware_kbl.zip -d $i915_folder
-
-      echo "Unpacking files to $nvidia_folder ..."
-      mkdir -p $nvidia_folder
-      unzip -o $firmware_src_folder/nvidia_firmware_gp108.zip -d $nvidia_folder
-      ;;
-    "Surface Book 2 15\"")
-      echo "Unpacking files to $intel_ipts_folder ..."
-      mkdir -p $intel_ipts_folder
-      unzip -o $firmware_src_folder/ipts_firmware_v101.zip -d $intel_ipts_folder
-
-      echo "Unpacking files to $i915_folder ..."
-      mkdir -p $i915_folder
-      unzip -o $firmware_src_folder/i915_firmware_kbl.zip -d $i915_folder
-
-      echo "Unpacking files to $nvidia_folder ..."
-      mkdir -p $nvidia_folder
-      unzip -o $firmware_src_folder/nvidia_firmware_gp108.zip -d $nvidia_folder
-      ;;
-    "Surface Go")
-      echo "Unpacking files to $ath10k_folder ..."
-      mkdir -p $ath10k_folder
-      unzip -o $firmware_src_folder/ath10k_firmware.zip -d $ath10k_folder
-      # if [ ! -f "/etc/init.d/surfacego-touchscreen" ]; then
-      #   echo "nPatching power control for Surface Go touchscreen ..."
-      #   echo "echo \"on\" > /sys/devices/pci0000:00/0000:00:15.1/i2c_designware.1/power/control" > /etc/init.d/surfacego-touchscreen
-      #   chmod 755 /etc/init.d/surfacego-touchscreen
-      #   # TODO: Figure out how to Arch equivalent of update-rc.d 
-      #   # update-rc.d surfacego-touchscreen defaults
-      # fi
-      ;;
-    *)
-      echo "Invalid selection. Moving on."
-      ;;
-  esac
-fi
-
-############################### CACHE REMOVAL ###############################
+############################### CLEANUP ###############################
 
 # Remove the cache folder to handle permission issues
 echo ""
