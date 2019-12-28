@@ -30,7 +30,7 @@ esac
 
 cache_folder=.cache
 build_folder=build-${version}
-kernel_repository=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+kernel_repository=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git 
 kernel_src_folder=linux-stable
 patches_repository=git://github.com/qzed/linux-surface.git
 patches_src_folder=linux-surface
@@ -42,7 +42,7 @@ fi
 
 ############################### CACHE UPDATES ############################### 
 
-# The cache is used for holding the large linux-stable and linux-surface repositories
+# Cache is used for holding frequently used repositories
 echo "Updating cache ..."
 mkdir -p $cache_folder
 cd $cache_folder
@@ -87,10 +87,6 @@ echo "$pkgbuild" > PKGBUILD
 echo "Creating symlink to kernel source code ..."
 ln -s ../$cache_folder/$kernel_src_folder $kernel_src_folder
 
-# Add Arch upstream patches 
-echo "Creating symlink to Arch upstream patches ..."
-ln -s ../base/patches patches
-
 # Add Surface device patches
 echo "Creating symlink to Surface device patches ..."
 ln -s ../$cache_folder/$patches_src_folder $patches_src_folder
@@ -99,7 +95,7 @@ ln -s ../$cache_folder/$patches_src_folder $patches_src_folder
 echo "Copying v$major_version .config file ..."
 versioned_config="config.$major_version"
 cp ../base/configs/$versioned_config .
-mv $versioned_config .config
+mv $versioned_config config
 
 # Exit the build directory
 cd ..
