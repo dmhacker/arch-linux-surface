@@ -56,13 +56,13 @@ fi
 # Prompt for modules upload & mkinitcpio rebuild
 echo
 echo "!!! WARNING !!! The following option will reset the MODULES option in your mkinitcpio config."
-echo "!!! WARNING !!! A backup of /etc/mkinitcpio.conf will be saved to /etc/mkinitcpio.conf.backup if you proceed."
+echo "!!! WARNING !!! A backup of /etc/mkinitcpio.conf will be saved to /etc/mkinitcpio.conf.bak if you proceed."
 read -r -p "2. Update /etc/mkinitcpio.conf using modules from initramfs-tools? [y/N] "
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio.conf.backup
+    sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio.conf.bak
     modules=$(echo "MODULES=($(grep -v '^#' $cache_folder/$patches_src_folder/root/etc/initramfs-tools/modules))" | tr "\n" " " | sed 's/ *$//g')
-    sudo sed -i "/^MODULES=(.*)/c\\$modules" /etc/mkinitcpio.conf
     echo "$modules will be added to /etc/mkinitcpio.conf."
+    sudo sed -i -E "s/^MODULES=(.*)$/$modules/" /etc/mkinitcpio.conf
     sudo mkinitcpio
     echo "Done fixing mkinitcpio.conf."
 fi
