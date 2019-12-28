@@ -62,7 +62,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio.conf.bak
     modules=$(echo "MODULES=($(grep -v '^#' $cache_folder/$patches_src_folder/root/etc/initramfs-tools/modules))" | tr "\n" " " | sed 's/ *$//g')
     echo "$modules will be added to /etc/mkinitcpio.conf."
-    sudo sed -i -E "s/^MODULES=(.*)$/$modules/" /etc/mkinitcpio.conf
+    sudo sed -i -E "s/^MODULES=(.*).*/$modules/" /etc/mkinitcpio.conf
     sudo mkinitcpio
     echo "Done fixing mkinitcpio.conf."
 fi
