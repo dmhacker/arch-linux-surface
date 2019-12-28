@@ -38,13 +38,13 @@ time, it will prompt you for them.
 ## Installation
 
 After you have run the setup script, it is now time to install the patched kernel.
-Find the latest version {VERSION} in the [pre-built binary releases](https://github.com/dmhacker/arch-linux-surface/releases) 
+Find the latest version {VERSION}<sup>*</sup> in the [pre-built binary releases](https://github.com/dmhacker/arch-linux-surface/releases) 
 and download the following tar files:
 
 * linux-surface-{VERSION}-x86_64.pkg.tar.xz
 * linux-surface-headers-{VERSION}-x86_64.pkg.tar.xz
 
-<sup><sub>Replace {VERSION} with whatever the latest version number is. For example, 5.13.15-1.</sub></sup>
+<sup>*Replace {VERSION} with whatever the latest version number is. For example, 5.13.15-1.</sup>
 
 After you have downloaded these files, `cd` into the directory containing them
 and run the following commands:
