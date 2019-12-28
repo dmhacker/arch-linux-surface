@@ -16,9 +16,11 @@ fi
 case $major_version in
   "4.19")
     version="4.19.56"
+    release_number=1
     ;;
   "5.3")
     version="5.3.15"
+    release_number=1
     ;;
   *)
     echo "Invalid selection!"
@@ -81,6 +83,7 @@ pkgbuild=`cat PKGBUILD`
 pkgbuild="${pkgbuild/\{0\}/$kernel_suffix}"
 pkgbuild="${pkgbuild/\{1\}/$major_version}"
 pkgbuild="${pkgbuild/\{2\}/$version}"
+pkgbuild="${pkgbuild/\{3\}/$release_number}"
 echo "$pkgbuild" > PKGBUILD
 
 # Add kernel repository 

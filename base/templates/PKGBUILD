@@ -8,7 +8,7 @@ _kernelver={1}
 # Standard package variables
 pkgbase=linux${_kernelname}
 pkgver={2}
-pkgrel=1
+pkgrel={3}
 pkgdesc='Linux'
 _srcname=linux-stable
 _srctag=v${pkgver}
