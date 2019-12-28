@@ -1,5 +1,10 @@
 #!/usr/bin/bash
 
+if [ "$EUID" -eq 0 ]
+  then echo "Do not run this script as root."
+  exit
+fi
+
 echo "This script will prepare Surface devices for installation of a patched Arch Linux kernel."
 echo "Answer 'y' to any options you wish to install. By default, options are unselected."
 echo
@@ -51,8 +56,8 @@ fi
 # Prompt for modules upload & mkinitcpio rebuild
 echo
 echo "!!! WARNING !!! The following option will reset the MODULES option in your mkinitcpio config."
-echo "!!! WARNING !!! A backup of /etc/mkinitcpio.conf will be saved to /etc/mkinitcpio.conf.old if you proceed."
-read -r -p "2. Rebuild kernel with modules from /etc/initramfs-tools/modules? [y/N] "
+echo "!!! WARNING !!! A backup of /etc/mkinitcpio.conf will be saved to /etc/mkinitcpio.conf.backup if you proceed."
+read -r -p "2. Update /etc/mkinitcpio.conf using modules from initramfs-tools? [y/N] "
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio.conf.backup
     modules=$(echo "MODULES=($(grep -v '^#' $cache_folder/$patches_src_folder/root/etc/initramfs-tools/modules))" | tr "\n" " " | sed 's/ *$//g')
