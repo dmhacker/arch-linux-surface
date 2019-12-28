@@ -91,11 +91,8 @@ fi
 echo
 read -r -p "5. Would you like to replace libwacom with its patched version? [y/N] "
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-  echo "Building and installing the patched version of libwacom ..."
-  cd "$cache_folder/$libwacom_src_folder"
-  makepkg -sri --skippgpcheck
-  cd "../.."
-  echo "Done installing patched libwacom."
+  echo "Please install the package libwacom-surface from the AUR."
+  echo "See https://aur.archlinux.org/packages/libwacom-surface/"
 fi
 
 ############################### CLEANUP ###############################
