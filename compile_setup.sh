@@ -20,7 +20,7 @@ case $major_version in
     ;;
   "5.3")
     version="5.3.15"
-    release_number=1
+    release_number=2
     ;;
   *)
     echo "Invalid selection!"
@@ -67,12 +67,6 @@ fi
 cd ..
 
 ############################### BUILD UPDATES ############################### 
-
-function join_by { 
-    local IFS="$1" 
-    shift 
-    echo "$*"
-}
 
 # Copy templates
 echo "Installing fresh set of template files ..." 
