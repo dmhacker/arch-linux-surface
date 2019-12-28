@@ -25,54 +25,37 @@ cd arch-linux-surface
 
 Before you begin compiling & installing the patched kernel, it's recommended that you 
 install all necessary firmware that your Surface device needs and replace suspend with hibernate.
-You can do this by running the `setup.sh` script with superuser permissions.
+You can do this by running the `setup.sh` script WITHOUT superuser permissions.
 
 ```
-sudo sh setup.sh
+sh setup.sh
 ```
 
-Now, you are ready to begin compilation of your kernel.<br>
-Alternatively, you could download the 
-[pre-built kernel binaries](https://github.com/dmhacker/arch-linux-surface/releases) 
-and skip ahead to the installation section.
-
-## Compilation
-
-To generate the build directory for the kernel, you need to run the `configure.sh` script.<br>
-The packager will prompt for the target major version of the Linux kernel during configuration.
-
-```
-sh configure.sh 
-```
-
-Once configure is finished, it will output a directory titled `build-[VERSION]`.<br>
-Note that [VERSION] is the full version of the kernel and not just its major version.<br>
-To build this kernel, use these two commands: 
-
-```
-cd build-[VERSION] 
-MAKEFLAGS="-j[NPROC]" makepkg -sc
-```
-
-<sup><sub>\* Replace [VERSION] with whatever kernel version configure outputs.<br></sub></sup>
-<sup><sub>\*\* Replace [NPROC] with the number of available processors in your machine.</sub></sup>
-
-If you are unable to issue this command because of write permission issues, use the following
-command to give yourself access, replacing [USER] and [VERSION] with their appropriate values:
-
-```
-chown -R [USER] build-[VERSION]
-```
+As of December 2019, the setup script should NOT be run with superuser permissions. This is both
+by design and for your own safety. If the script requires superuser permissions at any point in
+time, it will prompt you for them.
 
 ## Installation
 
-When the build process is completed, under `build-[VERSION]`, you will find these packages:
+After you have run the setup script, it is now time to install the patched kernel.
+Find the latest version {VERSION} in the [pre-built binary releases](https://github.com/dmhacker/arch-linux-surface/releases) 
+and download the following tar files:
+
+* linux-surface-{VERSION}-x86_64.pkg.tar.xz
+* linux-surface-headers-{VERSION}-x86_64.pkg.tar.xz
+
+<sup><sub>Replace {VERSION} with whatever the latest version number is. For example, 5.13.15-1.</sub></sup>
+
+After you have downloaded these files, `cd` into the directory containing them
+and run the following commands:
+
 ```
-linux-surface-[VERSION]-1-x86_64.pkg.tar.xz
-linux-surface-headers-[VERSION]-1-x86_64.pkg.tar.xz
-linux-surface-docs-[VERSION]-1-x86_64.pkg.tar.xz
+sudo pacman -U linux-surface-headers-{VERSION}-x86_64.pkg.tar.xz
+sudo pacman -U linux-surface-{VERSION}-x86_64.pkg.tar.xz
 ```
-You can either install them with `sudo pacman -U ...` or do something else with them.
+
+You are now finished. Reboot your system and change your bootloader to 
+load the `linux-surface` kernel.
 
 ## Troubleshooting
 
