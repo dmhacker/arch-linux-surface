@@ -31,7 +31,7 @@ esac
 ############################### VARIABLES ############################### 
 
 cache_folder=.cache
-build_folder=build-${version}
+build_folder=build-${version}-${release_number}
 kernel_repository=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git 
 kernel_src_folder=linux-stable
 patches_repository=git://github.com/qzed/linux-surface.git
