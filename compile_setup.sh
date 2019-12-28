@@ -22,6 +22,10 @@ case $major_version in
     version="5.3.18"
     release_number=1
     ;;
+  "5.4")
+    version="5.4.6"
+    release_number=1
+    ;;
   *)
     echo "Invalid selection!"
     exit 1
