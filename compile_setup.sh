@@ -68,6 +68,12 @@ cd ..
 
 ############################### BUILD UPDATES ############################### 
 
+function join_by { 
+    local IFS="$1" 
+    shift 
+    echo "$*"
+}
+
 # Copy templates
 echo "Installing fresh set of template files ..." 
 rm -rf $build_folder 
@@ -77,6 +83,26 @@ cp base/templates/* $build_folder
 # Enter the newly created build directory
 cd $build_folder
 
+# Add kernel repository 
+echo "Creating symlink to kernel source code ..."
+ln -s ../$cache_folder/$kernel_src_folder $kernel_src_folder
+
+# Add Surface device patches
+echo "Creating symlinks to Surface device patches ..."
+for src in ../$cache_folder/$patches_src_folder/patches/$major_version/*.patch; do
+    filename=$(basename $src)
+    patch_entry="  ${filename}"
+    skip_entry="            'SKIP'"
+    ln -s "$src" "$filename"
+    if [[ -z "$surface_patches" ]]; then
+        surface_patches="$patch_entry"
+        patch_skips="$skip_entry"
+    else
+        surface_patches="${surface_patches}\n${patch_entry}"
+        patch_skips="${patch_skips}\n${skip_entry}"
+    fi
+done
+
 # Fill in blank variables in PKGBUILD
 echo "Adjusting PKGBUILD version ..."
 pkgbuild=`cat PKGBUILD`
@@ -84,15 +110,9 @@ pkgbuild="${pkgbuild/\{0\}/$kernel_suffix}"
 pkgbuild="${pkgbuild/\{1\}/$major_version}"
 pkgbuild="${pkgbuild/\{2\}/$version}"
 pkgbuild="${pkgbuild/\{3\}/$release_number}"
-echo "$pkgbuild" > PKGBUILD
-
-# Add kernel repository 
-echo "Creating symlink to kernel source code ..."
-ln -s ../$cache_folder/$kernel_src_folder $kernel_src_folder
-
-# Add Surface device patches
-echo "Creating symlink to Surface device patches ..."
-ln -s ../$cache_folder/$patches_src_folder $patches_src_folder
+pkgbuild="${pkgbuild/\{4\}/$surface_patches}"
+pkgbuild="${pkgbuild/\{5\}/$patch_skips}"
+echo -e "$pkgbuild" > PKGBUILD
 
 # Add version-specific configuration file
 echo "Copying v$major_version .config file ..."

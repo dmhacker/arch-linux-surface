@@ -24,7 +24,7 @@ makedepends=(
 options=('!strip')
 source=(
   git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
-  git://github.com/qzed/linux-surface.git
+{4}
   config
 )
 validpgpkeys=(
@@ -33,36 +33,33 @@ validpgpkeys=(
   '8218F88849AAC522E94CF470A5E9288C4FA415FA'  # Jan Alexander Steffens (heftig)
 )
 sha256sums=('SKIP'
-            'SKIP'
+{5}
             'SKIP')
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
 export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EPOCH})"
 
-_apply_patch() {
-    msg2 "Applying patch $1..."
-    patch -Np1 < $1
-}
-
 prepare() {
   cd $_srcname
 
   git checkout $_srctag
 
-  msg2 "Setting version ..."
+  msg2 "Setting version..."
   scripts/setlocalversion --save-scmversion
   echo "-$pkgrel" > localversion.10-pkgrel
   echo "${pkgbase#linux}" > localversion.20-pkgname
 
-  msg2 "Applying Surface device patches ..."
-  for file in ../${_patchsrcname}/patches/${_kernelver}/*.patch
-  do
-    # [[ $file = *.patch ]] || continue
-    _apply_patch $file
+  local src
+  for src in "${source[@]}"; do
+    src="${src%%::*}"
+    src="${src##*/}"
+    [[ $src = *.patch ]] || continue
+    msg2 "Applying patch $src..."
+    patch -Np1 < "../$src"
   done
 
-  msg2 "Setting config ..."
+  msg2 "Setting config..."
   cp ../config .config
   make olddefconfig
 
