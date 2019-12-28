@@ -1,7 +1,8 @@
-# No build files 
+# Build files 
 *.tar.xz
 
-# No build directories
+# Build directories
 build*/
+
+# Caches
 .cache/
-.cache_setup/
