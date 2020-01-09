@@ -59,7 +59,7 @@ echo "!!! WARNING !!! The following option will reset the MODULES option in your
 echo "!!! WARNING !!! A backup of /etc/mkinitcpio.conf will be saved to /etc/mkinitcpio.conf.bak if you proceed."
 read -r -p "2. Update /etc/mkinitcpio.conf using modules from initramfs-tools? [y/N] "
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    modules=$(echo "MODULES=($(grep -v '^#' $cache_folder/$patches_src_folder/root/etc/initramfs-tools/modules))" | tr "\n" " " | sed 's/ *$//g')
+    modules=$(echo "MODULES=($(grep -v '^#' base/templates/modules))" | tr "\n" " " | sed 's/ *$//g')
     echo "$modules will be added to /etc/mkinitcpio.conf."
     sudo sed -i.bak -E "s/^MODULES=(.*).*/$modules/" /etc/mkinitcpio.conf
     sudo mkinitcpio
