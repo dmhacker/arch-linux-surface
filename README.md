@@ -57,6 +57,15 @@ sudo pacman -U linux-surface-{VERSION}-x86_64.pkg.tar.xz
 You are now finished. Reboot your system and change your bootloader to 
 load the `linux-surface` kernel.
 
+## Additional Packages
+
+Consider installing the following packages from the AUR if your device
+meets the given requirements.
+
+* [libwacom-surface](https://aur.archlinux.org/packages/libwacom-surface) — all devices — may help fix IPTS/touchscreen issues
+* [surface-control](https://aur.archlinux.org/packages/surface-control/) — Surface Book 2 only — provides an interface for controlling the SB2's dGPU
+* [surface-dtx-daemon](https://aur.archlinux.org/packages/surface-dtx-daemon/) — Surface Book 2 only — improves the clipboard detachment process for the SB2
+
 ## Troubleshooting
 
 For touchscreen issues, consider looking at [issue #56](https://github.com/dmhacker/arch-linux-surface/issues/56).
