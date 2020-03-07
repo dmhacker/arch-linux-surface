@@ -6,7 +6,7 @@ to the Linux kernel of your choice.
 
 This repository originally tracked jakeday's repository on the `master` branch.
 As of November 2019, the `master` branch has officially switched over to 
-using [linux-surface's version of these patches](https://github.com/linux-surface/linux-surface/) since jakeday's repository 
+using linux-surface's version of these patches since jakeday's repository 
 appears to be no longer actively maintained. As of March 2020, support
 for jakeday's patches has been dropped.
 
