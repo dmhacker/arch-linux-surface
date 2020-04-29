@@ -111,7 +111,7 @@ done
 
 # Add upstream patches
 echo "Creating symlinks to upstream patches ..."
-for src in ../base/patches/*.patch; do
+for src in ../base/patches/$major_version/*.patch; do
     filename=$(basename $src)
     patch_entry="  ${filename}"
     skip_entry="            'SKIP'"
