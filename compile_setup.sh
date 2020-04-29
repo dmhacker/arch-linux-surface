@@ -100,11 +100,27 @@ for src in ../$cache_folder/$patches_src_folder/patches/$major_version/*.patch; 
     patch_entry="  ${filename}"
     skip_entry="            'SKIP'"
     ln -s "$src" "$filename"
-    if [[ -z "$surface_patches" ]]; then
-        surface_patches="$patch_entry"
+    if [[ -z "$patch_names" ]]; then
+        patch_names="$patch_entry"
         patch_skips="$skip_entry"
     else
-        surface_patches="${surface_patches}\n${patch_entry}"
+        patch_names="${patch_names}\n${patch_entry}"
+        patch_skips="${patch_skips}\n${skip_entry}"
+    fi
+done
+
+# Add upstream patches
+echo "Creating symlinks to upstream patches ..."
+for src in ../base/patches/*.patch; do
+    filename=$(basename $src)
+    patch_entry="  ${filename}"
+    skip_entry="            'SKIP'"
+    ln -s "$src" "$filename"
+    if [[ -z "$patch_names" ]]; then
+        patch_names="$patch_entry"
+        patch_skips="$skip_entry"
+    else
+        patch_names="${patch_names}\n${patch_entry}"
         patch_skips="${patch_skips}\n${skip_entry}"
     fi
 done
@@ -116,7 +132,7 @@ pkgbuild="${pkgbuild/\{0\}/$kernel_suffix}"
 pkgbuild="${pkgbuild/\{1\}/$major_version}"
 pkgbuild="${pkgbuild/\{2\}/$version}"
 pkgbuild="${pkgbuild/\{3\}/$release_number}"
-pkgbuild="${pkgbuild/\{4\}/$surface_patches}"
+pkgbuild="${pkgbuild/\{4\}/$patch_names}"
 pkgbuild="${pkgbuild/\{5\}/$patch_skips}"
 echo -e "$pkgbuild" > PKGBUILD
 
