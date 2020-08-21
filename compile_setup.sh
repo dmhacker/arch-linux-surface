@@ -38,6 +38,10 @@ case $major_version in
     version="5.7.15"
     release_number=1
     ;;
+  "5.8")
+    version="5.8.1"
+    release_number=1
+    ;;
   *)
     echo "Invalid selection!"
     exit 1
@@ -83,6 +87,9 @@ fi
 cd ..
 
 ############################### BUILD UPDATES ############################### 
+
+# Ignore empty file pattern matches
+shopt -s nullglob
 
 # Copy templates
 echo "Installing fresh set of template files ..." 
