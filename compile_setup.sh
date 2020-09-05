@@ -1,11 +1,11 @@
 #!/usr/bin/bash
 
-############################### VERSION SELECTION ############################### 
+############################### VERSION SELECTION ###############################
 
 # User did not enter a major version selection, prompt for one
 if [ "$1" = "" ]; then
   echo "Which kernel version do you want to build?"
-  select major_version in "4.19" "5.3" "5.4" "5.5" "5.6" "5.7"; do
+  select major_version in "4.19" "5.3" "5.4" "5.5" "5.6" "5.7" "5.8"; do
     break;
   done
 else
@@ -23,11 +23,11 @@ case $major_version in
     release_number=1
     ;;
   "5.4")
-    version="5.4.6"
+    version="5.4.63"
     release_number=1
     ;;
   "5.5")
-    version="5.5.13"
+    version="5.5.19"
     release_number=1
     ;;
   "5.6")
@@ -35,11 +35,11 @@ case $major_version in
     release_number=1
     ;;
   "5.7")
-    version="5.7.15"
+    version="5.7.19"
     release_number=1
     ;;
   "5.8")
-    version="5.8.1"
+    version="5.8.7"
     release_number=1
     ;;
   *)
@@ -48,11 +48,11 @@ case $major_version in
     ;;
 esac
 
-############################### VARIABLES ############################### 
+############################### VARIABLES ###############################
 
 cache_folder=.cache
 build_folder=build-${version}-${release_number}
-kernel_repository=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git 
+kernel_repository=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 kernel_src_folder=linux-stable
 patches_repository=git://github.com/qzed/linux-surface.git
 patches_src_folder=linux-surface
@@ -62,7 +62,7 @@ if [ "$major_version" = "4.19" ]; then
   kernel_suffix="-surface-lts"
 fi
 
-############################### CACHE UPDATES ############################### 
+############################### CACHE UPDATES ###############################
 
 # Cache is used for holding frequently used repositories
 echo "Updating cache ..."
@@ -83,24 +83,24 @@ else
   git clone $patches_repository $patches_src_folder
 fi
 
-# Exit the cache folder 
+# Exit the cache folder
 cd ..
 
-############################### BUILD UPDATES ############################### 
+############################### BUILD UPDATES ###############################
 
 # Ignore empty file pattern matches
 shopt -s nullglob
 
 # Copy templates
-echo "Installing fresh set of template files ..." 
-rm -rf $build_folder 
-mkdir $build_folder 
-cp base/templates/* $build_folder 
+echo "Installing fresh set of template files ..."
+rm -rf $build_folder
+mkdir $build_folder
+cp base/templates/* $build_folder
 
 # Enter the newly created build directory
 cd $build_folder
 
-# Add kernel repository 
+# Add kernel repository
 echo "Creating symlink to kernel source code ..."
 ln -s ../$cache_folder/$kernel_src_folder $kernel_src_folder
 
@@ -156,7 +156,7 @@ mv $versioned_config config
 # Exit the build directory
 cd ..
 
-############################### NEXT INSTRUCTIONS ############################### 
+############################### NEXT INSTRUCTIONS ###############################
 
 nproc=`grep -c ^processor /proc/cpuinfo`
 echo ""
