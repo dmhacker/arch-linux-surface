@@ -39,7 +39,7 @@ case $major_version in
     release_number=1
     ;;
   "5.8")
-    version="5.8.6"
+    version="5.8.14"
     release_number=1
     ;;
   *)
